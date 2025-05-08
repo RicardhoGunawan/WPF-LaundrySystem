@@ -1,0 +1,86 @@
+﻿<UserControl x:Class="Laundry.Views.ServiceView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:Laundry.Views"
+             mc:Ignorable="d">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="350"/>
+        </Grid.ColumnDefinitions>
+        
+        <!-- Service List -->
+        <Grid Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Margin="0,0,10,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            
+            <TextBlock Grid.Row="0" Text="Daftar Layanan" FontSize="16" FontWeight="Bold" Margin="0,0,0,10"/>
+            
+            <DataGrid Grid.Row="1" x:Name="ServicesDataGrid" AutoGenerateColumns="False" IsReadOnly="True"
+                      SelectionChanged="ServicesDataGrid_SelectionChanged">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="ID" Binding="{Binding ServiceId}" Width="60"/>
+                    <DataGridTextColumn Header="Nama Layanan" Binding="{Binding Name}" Width="*"/>
+                    <DataGridTextColumn Header="Harga/Kg" Binding="{Binding PricePerKg, StringFormat='{}{0:N0}'}" Width="100"/>
+                    <DataGridTextColumn Header="Est. Jam" Binding="{Binding EstimatedHours}" Width="80"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+        
+        <!-- Service Form -->
+        <GroupBox Grid.Row="0" Grid.Column="1" Header="Tambah/Edit Layanan" Margin="0,0,0,10">
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                
+                <TextBlock Grid.Row="0" Text="ID:" Margin="0,5"/>
+                <TextBox Grid.Row="1" x:Name="ServiceIdTextBox" IsReadOnly="True" Margin="0,0,0,10"/>
+                
+                <TextBlock Grid.Row="2" Text="Nama Layanan:" Margin="0,5"/>
+                <TextBox Grid.Row="3" x:Name="NameTextBox" Margin="0,0,0,10"/>
+                
+                <Grid Grid.Row="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Harga/Kg:" Margin="0,5,5,5"/>
+                    <TextBox Grid.Row="1" Grid.Column="0" x:Name="PriceTextBox" Margin="0,0,5,10"/>
+                    
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="Estimasi Jam:" Margin="5,5,0,5"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" x:Name="EstimatedHoursTextBox" Margin="5,0,0,10"/>
+                </Grid>
+                
+                <TextBlock Grid.Row="5" Text="Deskripsi:" Margin="0,5"/>
+                <TextBox Grid.Row="6" x:Name="DescriptionTextBox" Height="60" TextWrapping="Wrap" AcceptsReturn="True" Margin="0,0,0,10"/>
+            </Grid>
+        </GroupBox>
+        
+        <!-- Action Buttons -->
+        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical" VerticalAlignment="Top">
+            <Button x:Name="SaveButton" Content="Simpan" Click="SaveButton_Click" Height="40" Margin="0,0,0,10"/>
+            <Button x:Name="NewButton" Content="Baru" Click="NewButton_Click" Height="40" Margin="0,0,0,10"/>
+            <Button x:Name="DeleteButton" Content="Hapus" Click="DeleteButton_Click" Height="40" Background="#e74c3c"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

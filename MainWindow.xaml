@@ -1,0 +1,46 @@
+﻿<Window x:Class="Laundry.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Laundry"
+        xmlns:views="clr-namespace:Laundry.Views"
+        mc:Ignorable="d"
+        Title="Aplikasi Laundry" Height="600" Width="900"
+        WindowStartupLocation="CenterScreen">
+    
+    <Grid Background="{StaticResource BackgroundColor}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Background="{StaticResource PrimaryColor}" Padding="15">
+            <TextBlock Text="SISTEM MANAJEMEN LAUNDRY" 
+                       FontSize="24" 
+                       FontWeight="Bold" 
+                       Foreground="White"
+                       HorizontalAlignment="Center"/>
+        </Border>
+
+        <!-- Main Content -->
+        <TabControl Grid.Row="1" Margin="10">
+            <TabItem Header="Pesanan Baru">
+                <local:NewOrderView/>
+            </TabItem>
+            <TabItem Header="Daftar Pesanan">
+                <views:OrderListView/>
+            </TabItem>
+            <TabItem Header="Pelanggan">
+                <views:CustomerView/>
+            </TabItem>
+            <TabItem Header="Layanan">
+                <views:ServiceView/>
+            </TabItem>
+            <TabItem Header="Laporan">
+                <views:ReportView/>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

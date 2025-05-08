@@ -1,0 +1,102 @@
+﻿<UserControl x:Class="Laundry.Views.ReportView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:Laundry.Views"
+             mc:Ignorable="d">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Header -->
+        <TextBlock Grid.Row="0" Text="Laporan" FontSize="20" FontWeight="Bold" Margin="0,0,0,15"/>
+        
+        <!-- Filters -->
+        <Grid Grid.Row="1" Margin="0,0,0,15">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            
+            <TextBlock Grid.Column="0" Text="Dari:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+            <DatePicker Grid.Column="1" x:Name="StartDatePicker" Margin="0,0,15,0"/>
+            
+            <TextBlock Grid.Column="2" Text="Sampai:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+            <DatePicker Grid.Column="3" x:Name="EndDatePicker" Margin="0,0,15,0"/>
+            
+            <Button Grid.Column="4" Content="Generate" Click="GenerateButton_Click" Width="120" Margin="0,0,10,0"/>
+            <Button Grid.Column="5" Content="Print" Click="PrintButton_Click" Width="100"/>
+        </Grid>
+        
+        <!-- Report Tabs -->
+        <TabControl Grid.Row="2">
+            <TabItem Header="Laporan Penjualan">
+                <DataGrid x:Name="SalesDataGrid" AutoGenerateColumns="False" IsReadOnly="True">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Tanggal" Binding="{Binding Date, StringFormat='{}{0:dd/MM/yyyy}'}" Width="100"/>
+                        <DataGridTextColumn Header="Jumlah Pesanan" Binding="{Binding OrderCount}" Width="120"/>
+                        <DataGridTextColumn Header="Total Pendapatan" Binding="{Binding TotalAmount, StringFormat='{}{0:N0}'}" Width="150"/>
+                        <DataGridTextColumn Header="Pembayaran Selesai" Binding="{Binding PaidAmount, StringFormat='{}{0:N0}'}" Width="150"/>
+                        <DataGridTextColumn Header="Pembayaran Pending" Binding="{Binding UnpaidAmount, StringFormat='{}{0:N0}'}" Width="150"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+            <TabItem Header="Laporan Layanan">
+                <DataGrid x:Name="ServiceReportDataGrid" AutoGenerateColumns="False" IsReadOnly="True">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Layanan" Binding="{Binding ServiceName}" Width="*"/>
+                        <DataGridTextColumn Header="Jumlah Pesanan" Binding="{Binding OrderCount}" Width="120"/>
+                        <DataGridTextColumn Header="Total Kg" Binding="{Binding TotalWeight}" Width="100"/>
+                        <DataGridTextColumn Header="Total Pendapatan" Binding="{Binding TotalAmount, StringFormat='{}{0:N0}'}" Width="150"/>
+                        <DataGridTextColumn Header="% dari Total" Binding="{Binding Percentage, StringFormat='{}{0:0.00}%'}" Width="100"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+            <TabItem Header="Pelanggan Teratas">
+                <DataGrid x:Name="TopCustomersDataGrid" AutoGenerateColumns="False" IsReadOnly="True">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Nama Pelanggan" Binding="{Binding CustomerName}" Width="*"/>
+                        <DataGridTextColumn Header="Jumlah Pesanan" Binding="{Binding OrderCount}" Width="120"/>
+                        <DataGridTextColumn Header="Total Pengeluaran" Binding="{Binding TotalAmount, StringFormat='{}{0:N0}'}" Width="150"/>
+                        <DataGridTextColumn Header="Pesanan Terakhir" Binding="{Binding LastOrder, StringFormat='{}{0:dd/MM/yyyy}'}" Width="120"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+        </TabControl>
+        
+        <!-- Summary -->
+        <Border Grid.Row="3" BorderBrush="#dddddd" BorderThickness="1" Margin="0,15,0,0" Padding="10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="Total Pesanan:" FontWeight="Bold"/>
+                    <TextBlock x:Name="TotalOrdersTextBlock" Text="0" FontSize="18" Margin="0,5,0,0"/>
+                </StackPanel>
+                
+                <StackPanel Grid.Column="1">
+                    <TextBlock Text="Total Pendapatan:" FontWeight="Bold"/>
+                    <TextBlock x:Name="TotalIncomeTextBlock" Text="Rp 0" FontSize="18" Margin="0,5,0,0"/>
+                </StackPanel>
+                
+                <StackPanel Grid.Column="2">
+                    <TextBlock Text="Rata-rata per Pesanan:" FontWeight="Bold"/>
+                    <TextBlock x:Name="AveragePerOrderTextBlock" Text="Rp 0" FontSize="18" Margin="0,5,0,0"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

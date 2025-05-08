@@ -1,0 +1,135 @@
+﻿<UserControl x:Class="Laundry.NewOrderView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:Laundry"
+             mc:Ignorable="d">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Customer Information -->
+        <GroupBox Grid.Row="0" Header="Informasi Pelanggan" Margin="0,0,0,10">
+            <Grid Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Pelanggan:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <ComboBox Grid.Row="0" Grid.Column="1" x:Name="CustomerComboBox" DisplayMemberPath="Name" Margin="0,5"/>
+                <Button Grid.Row="0" Grid.Column="2" Content="Pelanggan Baru" Click="NewCustomerButton_Click" Margin="10,5"/>
+                
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="No. Telp:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <TextBox Grid.Row="1" Grid.Column="1" x:Name="PhoneTextBox" IsReadOnly="True" Margin="0,5"/>
+                <TextBlock Grid.Row="1" Grid.Column="2" Text="Alamat:" VerticalAlignment="Center" Margin="10,0,10,0"/>
+                <TextBox Grid.Row="1" Grid.Column="3" x:Name="AddressTextBox" IsReadOnly="True" Margin="0,5"/>
+            </Grid>
+        </GroupBox>
+        
+        <!-- Service Selection -->
+        <GroupBox Grid.Row="1" Header="Layanan" Margin="0,0,0,10">
+            <Grid Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Layanan:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <ComboBox Grid.Row="0" Grid.Column="1" x:Name="ServiceComboBox" DisplayMemberPath="Name" SelectionChanged="ServiceComboBox_SelectionChanged" Margin="0,5"/>
+                <TextBlock Grid.Row="0" Grid.Column="2" Text="Harga/Kg:" VerticalAlignment="Center" Margin="10,0,10,0"/>
+                <TextBox Grid.Row="0" Grid.Column="3" x:Name="PriceTextBox" IsReadOnly="True" Margin="0,5"/>
+                
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Berat (Kg):" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <TextBox Grid.Row="1" Grid.Column="1" x:Name="WeightTextBox" TextChanged="WeightTextBox_TextChanged" Margin="0,5"/>
+                <TextBlock Grid.Row="1" Grid.Column="2" Text="Subtotal:" VerticalAlignment="Center" Margin="10,0,10,0"/>
+                <TextBox Grid.Row="1" Grid.Column="3" x:Name="SubtotalTextBox" IsReadOnly="True" Margin="0,5"/>
+                
+                <Button Grid.Row="1" Grid.Column="4" Content="Tambah" Click="AddServiceButton_Click" Margin="10,5"/>
+            </Grid>
+        </GroupBox>
+        
+        <!-- Order Items -->
+        <GroupBox Grid.Row="2" Header="Item Pesanan" Margin="0,0,0,10">
+            <DataGrid x:Name="OrderItemsDataGrid" AutoGenerateColumns="False" IsReadOnly="True" Margin="10">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="No" Binding="{Binding No}" Width="50"/>
+                    <DataGridTextColumn Header="Layanan" Binding="{Binding ServiceName}" Width="*"/>
+                    <DataGridTextColumn Header="Berat (Kg)" Binding="{Binding Weight}" Width="100"/>
+                    <DataGridTextColumn Header="Harga/Kg" Binding="{Binding UnitPrice, StringFormat='{}{0:N0}'}" Width="100"/>
+                    <DataGridTextColumn Header="Subtotal" Binding="{Binding Subtotal, StringFormat='{}{0:N0}'}" Width="120"/>
+                    <DataGridTemplateColumn Header="Aksi" Width="100">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="Hapus" Click="RemoveServiceButton_Click" 
+                                        Tag="{Binding No}" Background="#e74c3c"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </GroupBox>
+        
+        <!-- Order Summary and Buttons -->
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            
+            <!-- Order Summary -->
+            <GroupBox Grid.Column="0" Header="Ringkasan Pesanan">
+                <Grid Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Total:" FontWeight="Bold" Margin="0,5"/>
+                    <TextBlock Grid.Row="0" Grid.Column="1" x:Name="TotalAmountTextBlock" FontWeight="Bold" Margin="10,5" HorizontalAlignment="Right"/>
+                    
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Diskon:" Margin="0,5"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" x:Name="DiscountTextBox" TextChanged="DiscountTextBox_TextChanged" Margin="10,5" HorizontalAlignment="Right" Width="120"/>
+                    
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Total Akhir:" FontWeight="Bold" Margin="0,5"/>
+                    <TextBlock Grid.Row="2" Grid.Column="1" x:Name="FinalAmountTextBlock" FontWeight="Bold" Margin="10,5" HorizontalAlignment="Right"/>
+                    
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Catatan:" VerticalAlignment="Top" Margin="0,5"/>
+                    <TextBox Grid.Row="3" Grid.Column="1" x:Name="NotesTextBox" Margin="10,5" Height="60" TextWrapping="Wrap" AcceptsReturn="True"/>
+                </Grid>
+            </GroupBox>
+            
+            <!-- Action Buttons -->
+            <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0">
+                <Button x:Name="SaveOrderButton" Content="Simpan Pesanan" Click="SaveOrderButton_Click" 
+                        Height="40" Width="150" Margin="0,5" Background="{StaticResource SecondaryColor}"/>
+                <Button x:Name="CancelButton" Content="Batal" Click="CancelButton_Click" 
+                        Height="40" Width="150" Margin="0,5" Background="#e74c3c"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>
