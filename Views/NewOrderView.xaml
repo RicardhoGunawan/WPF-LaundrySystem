@@ -110,13 +110,13 @@
                     </Grid.RowDefinitions>
                     
                     <TextBlock Grid.Row="0" Grid.Column="0" Text="Total:" FontWeight="Bold" Margin="0,5"/>
-                    <TextBlock Grid.Row="0" Grid.Column="1" x:Name="TotalAmountTextBlock" FontWeight="Bold" Margin="10,5" HorizontalAlignment="Right"/>
+                    <TextBlock Grid.Row="0" Grid.Column="1" x:Name="TotalAmountTextBlock" Text="0" FontWeight="Bold" Margin="10,5" HorizontalAlignment="Right"/>
                     
                     <TextBlock Grid.Row="1" Grid.Column="0" Text="Diskon:" Margin="0,5"/>
                     <TextBox Grid.Row="1" Grid.Column="1" x:Name="DiscountTextBox" TextChanged="DiscountTextBox_TextChanged" Margin="10,5" HorizontalAlignment="Right" Width="120"/>
                     
                     <TextBlock Grid.Row="2" Grid.Column="0" Text="Total Akhir:" FontWeight="Bold" Margin="0,5"/>
-                    <TextBlock Grid.Row="2" Grid.Column="1" x:Name="FinalAmountTextBlock" FontWeight="Bold" Margin="10,5" HorizontalAlignment="Right"/>
+                    <TextBlock Grid.Row="2" Grid.Column="1" x:Name="FinalAmountTextBlock" Text="0" FontWeight="Bold" Margin="10,5" HorizontalAlignment="Right"/>
                     
                     <TextBlock Grid.Row="3" Grid.Column="0" Text="Catatan:" VerticalAlignment="Top" Margin="0,5"/>
                     <TextBox Grid.Row="3" Grid.Column="1" x:Name="NotesTextBox" Margin="10,5" Height="60" TextWrapping="Wrap" AcceptsReturn="True"/>
@@ -126,7 +126,7 @@
             <!-- Action Buttons -->
             <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0">
                 <Button x:Name="SaveOrderButton" Content="Simpan Pesanan" Click="SaveOrderButton_Click" 
-                        Height="40" Width="150" Margin="0,5" Background="{StaticResource SecondaryColor}"/>
+                        Height="40" Width="150" Margin="0,5" Background="#4CAF50"/>
                 <Button x:Name="CancelButton" Content="Batal" Click="CancelButton_Click" 
                         Height="40" Width="150" Margin="0,5" Background="#e74c3c"/>
             </StackPanel>

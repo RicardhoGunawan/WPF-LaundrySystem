@@ -27,6 +27,16 @@ namespace Laundry.Data
         {
             base.OnModelCreating(modelBuilder);
             
+            // Konfigurasi Orders.Notes untuk bisa null
+            modelBuilder.Entity<Order>()
+                .Property(o => o.Notes)
+                .IsRequired(false);
+            
+            // Konfigurasi OrderItems.Notes untuk bisa null
+            modelBuilder.Entity<OrderItem>()
+                .Property(o => o.Notes)
+                .IsRequired(false);
+            
             // Seed data for services
             modelBuilder.Entity<Service>().HasData(
                 new Service { ServiceId = 1, Name = "Cuci Reguler", PricePerKg = 7000, Description = "Cuci dan setrika reguler", EstimatedHours = 24 },

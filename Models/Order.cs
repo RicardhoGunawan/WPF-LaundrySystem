@@ -39,7 +39,7 @@ namespace Laundry.Models
         public bool IsPaid { get; set; }
         
         [StringLength(500)]
-        public string Notes { get; set; }
+        public string? Notes { get; set; } 
         
         // Navigation properties
         [ForeignKey("CustomerId")]

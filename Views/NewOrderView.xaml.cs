@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
@@ -28,6 +29,8 @@ namespace Laundry
             public decimal Weight { get; set; }
             public decimal UnitPrice { get; set; }
             public decimal Subtotal { get; set; }
+            public string Notes { get; set; } // ✅ Tambahkan ini
+
         }
         
         public NewOrderView()
@@ -176,16 +179,55 @@ namespace Laundry
         
         private void UpdateOrderSummary()
         {
-            _totalAmount = _orderItems.Sum(i => i.Subtotal);
-            _finalAmount = _totalAmount - _discountAmount;
-            
-            if (_finalAmount < 0)
+            try
             {
-                _finalAmount = 0;
+                // Calculate total amount from all order items
+                _totalAmount = _orderItems.Sum(i => i.Subtotal);
+        
+                // Handle discount amount (nullable)
+                if (!decimal.TryParse(DiscountTextBox.Text, out _discountAmount))
+                {
+                    _discountAmount = 0;
+                }
+        
+                // Ensure discount is not negative
+                if (_discountAmount < 0)
+                {
+                    _discountAmount = 0;
+                    DiscountTextBox.Text = "0";
+                }
+        
+                // Calculate final amount with protection against negative values
+                _finalAmount = _totalAmount - _discountAmount;
+                if (_finalAmount < 0)
+                {
+                    _finalAmount = 0;
+                }
+        
+                // Update UI with formatted values
+                TotalAmountTextBlock.Text = _totalAmount.ToString("N0");
+                FinalAmountTextBlock.Text = _finalAmount.ToString("N0");
+        
+                // Update discount textbox if needed
+                if (_discountAmount == 0 && DiscountTextBox.Text != "0")
+                {
+                    DiscountTextBox.Text = "0";
+                }
             }
-            
-            TotalAmountTextBlock.Text = _totalAmount.ToString("N0");
-            FinalAmountTextBlock.Text = _finalAmount.ToString("N0");
+            catch (Exception ex)
+            {
+                // Log error or show message if calculation fails
+                Debug.WriteLine($"Error in UpdateOrderSummary: {ex.Message}");
+        
+                // Reset to safe values
+                _totalAmount = 0;
+                _discountAmount = 0;
+                _finalAmount = 0;
+        
+                TotalAmountTextBlock.Text = "0";
+                FinalAmountTextBlock.Text = "0";
+                DiscountTextBox.Text = "0";
+            }
         }
         
         private void NewCustomerButton_Click(object sender, RoutedEventArgs e)
@@ -200,76 +242,86 @@ namespace Laundry
         
         private void SaveOrderButton_Click(object sender, RoutedEventArgs e)
         {
-            // Validate customer selection
             var selectedCustomer = CustomerComboBox.SelectedItem as Customer;
             if (selectedCustomer == null)
             {
                 MessageBox.Show("Pilih pelanggan terlebih dahulu.", "Peringatan", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-            
-            // Validate order items
+
             if (_orderItems.Count == 0)
             {
                 MessageBox.Show("Tambahkan minimal satu layanan.", "Peringatan", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-            
+
             try
             {
-                // Create new order
-                var order = new Order
+                using (var transaction = _context.Database.BeginTransaction())
                 {
-                    CustomerId = selectedCustomer.CustomerId,
-                    OrderDate = DateTime.Now,
-                    Status = OrderStatus.New,
-                    TotalAmount = _totalAmount,
-                    DiscountAmount = _discountAmount,
-                    FinalAmount = _finalAmount,
-                    IsPaid = false,
-                    Notes = NotesTextBox.Text
-                };
-                
-                _context.Orders.Add(order);
-                _context.SaveChanges();
-                
-                // Add order items
-                foreach (var item in _orderItems)
-                {
-                    var orderItem = new OrderItem
+                    // Buat dan simpan Order
+                    var order = new Order
                     {
-                        OrderId = order.OrderId,
-                        ServiceId = item.ServiceId,
-                        Weight = item.Weight,
-                        UnitPrice = item.UnitPrice,
-                        Subtotal = item.Subtotal
+                        CustomerId = selectedCustomer.CustomerId,
+                        OrderDate = DateTime.Now,
+                        Status = OrderStatus.New,
+                        TotalAmount = _totalAmount,
+                        DiscountAmount = _discountAmount,
+                        FinalAmount = _finalAmount,
+                        IsPaid = false,
+                        Notes = string.IsNullOrWhiteSpace(NotesTextBox.Text) ? null : NotesTextBox.Text // Sekarang bisa null
                     };
-                    
-                    _context.OrderItems.Add(orderItem);
+
+                    _context.Orders.Add(order);
+                    _context.SaveChanges(); // Menyimpan order untuk mendapatkan OrderId
+
+                    // Simpan OrderItems
+                    foreach (var item in _orderItems)
+                    {
+                        if (item.Weight <= 0 || item.UnitPrice <= 0 || item.Subtotal <= 0)
+                        {
+                            throw new InvalidOperationException("Item layanan memiliki nilai tidak valid (berat/harga/subtotal).");
+                        }
+
+                        var orderItem = new OrderItem
+                        {
+                            OrderId = order.OrderId,
+                            ServiceId = item.ServiceId,
+                            Weight = item.Weight,
+                            UnitPrice = item.UnitPrice,
+                            Subtotal = item.Subtotal,
+                            Notes = string.IsNullOrWhiteSpace(item.Notes) ? null : item.Notes // Sekarang bisa null
+                        };
+
+                        _context.OrderItems.Add(orderItem);
+                    }
+
+                    _context.SaveChanges();
+                    transaction.Commit();
+
+                    MessageBox.Show($"Pesanan berhasil disimpan dengan ID: {order.OrderId}", "Sukses", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    // Ajukan pembayaran langsung
+                    var result = MessageBox.Show("Apakah ingin melakukan pembayaran sekarang?", "Pembayaran",
+                                                 MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        var paymentWindow = new PaymentWindow(order.OrderId);
+                        paymentWindow.Owner = Window.GetWindow(this);
+                        paymentWindow.ShowDialog();
+                    }
+
+                    ResetForm();
                 }
-                
-                _context.SaveChanges();
-                
-                MessageBox.Show($"Pesanan berhasil disimpan dengan ID: {order.OrderId}", "Sukses", MessageBoxButton.OK, MessageBoxImage.Information);
-                
-                // Ask if user wants to make payment
-                var result = MessageBox.Show("Apakah ingin melakukan pembayaran sekarang?", "Pembayaran", 
-                                             MessageBoxButton.YesNo, MessageBoxImage.Question);
-                if (result == MessageBoxResult.Yes)
-                {
-                    var paymentWindow = new PaymentWindow(order.OrderId);
-                    paymentWindow.Owner = Window.GetWindow(this);
-                    paymentWindow.ShowDialog();
-                }
-                
-                // Reset form
-                ResetForm();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Console.WriteLine(ex.ToString()); // atau Debug.WriteLine jika di WPF
+
+                MessageBox.Show($"Terjadi kesalahan saat menyimpan pesanan:\n{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
         
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
