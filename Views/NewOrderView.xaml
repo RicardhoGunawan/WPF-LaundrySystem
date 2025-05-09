@@ -4,8 +4,163 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:local="clr-namespace:Laundry"
-             mc:Ignorable="d">
-    <Grid Margin="10">
+             mc:Ignorable="d"
+             Background="#F5F7FA">
+    
+    <UserControl.Resources>
+        <!-- Modern style resources -->
+        <Style x:Key="ModernTextBlock" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,0,12,0"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="Foreground" Value="#37474F"/>
+        </Style>
+        
+        <Style x:Key="ModernTextBox" TargetType="TextBox">
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Padding" Value="8,5"/>
+            <Setter Property="Margin" Value="0,5"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#DADCE0"/>
+            <Setter Property="Background" Value="White"/>
+        </Style>
+        
+        <Style x:Key="ModernComboBox" TargetType="ComboBox">
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Padding" Value="8,5"/>
+            <Setter Property="Margin" Value="0,5"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#DADCE0"/>
+            <Setter Property="Background" Value="White"/>
+        </Style>
+        
+        <Style x:Key="PrimaryButton" TargetType="Button">
+            <Setter Property="Background" Value="#3F51B5"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="16,8"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="4" 
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                BorderBrush="{TemplateBinding BorderBrush}">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                              VerticalAlignment="Center" 
+                                              Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#303F9F"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#1A237E"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <Style x:Key="SecondaryButton" TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+            <Setter Property="Background" Value="#78909C"/>
+        </Style>
+        
+        <Style x:Key="SuccessButton" TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+            <Setter Property="Background" Value="#4CAF50"/>
+        </Style>
+        
+        <Style x:Key="DangerButton" TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+            <Setter Property="Background" Value="#F44336"/>
+        </Style>
+        
+        <Style x:Key="ModernGroupBox" TargetType="GroupBox">
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+            <Setter Property="Margin" Value="0,0,0,16"/>
+            <Setter Property="Padding" Value="16,12,16,16"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="GroupBox">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Border Grid.Row="0" Grid.RowSpan="2"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="6"/>
+                            <Border Grid.Row="0" Background="{TemplateBinding Background}" Padding="8,0,0,0">
+                                <ContentPresenter ContentSource="Header" RecognizesAccessKey="True" Margin="4,0,0,0"/>
+                            </Border>
+                            <ContentPresenter Grid.Row="1" Margin="{TemplateBinding Padding}"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="HeaderTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" 
+                                   FontWeight="SemiBold" 
+                                   FontSize="14" 
+                                   Foreground="#37474F"
+                                   Margin="0,8,0,0"/>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <Style x:Key="ModernDataGrid" TargetType="DataGrid">
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="RowBackground" Value="White"/>
+            <Setter Property="AlternatingRowBackground" Value="#F5F7FA"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="#E0E0E0"/>
+            <Setter Property="VerticalGridLinesBrush" Value="#E0E0E0"/>
+            <Setter Property="RowHeight" Value="36"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+        </Style>
+        
+        <Style x:Key="DataGridColumnHeader" TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="#ECEFF1"/>
+            <Setter Property="Foreground" Value="#37474F"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="BorderThickness" Value="0,0,1,1"/>
+            <Setter Property="BorderBrush" Value="#CFD8DC"/>
+        </Style>
+        
+        <Style x:Key="DataGridCell" TargetType="DataGridCell">
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="DataGridCell">
+                        <Border Padding="{TemplateBinding Padding}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                Background="{TemplateBinding Background}" 
+                                SnapsToDevicePixels="True">
+                            <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    
+    <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -13,9 +168,9 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         
-        <!-- Customer Information -->
-        <GroupBox Grid.Row="0" Header="Informasi Pelanggan" Margin="0,0,0,10">
-            <Grid Margin="10">
+        <!-- Customer Information Section -->
+        <GroupBox Grid.Row="0" Header="Informasi Pelanggan" Style="{StaticResource ModernGroupBox}">
+            <Grid Margin="0,8,0,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
@@ -27,20 +182,29 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 
-                <TextBlock Grid.Row="0" Grid.Column="0" Text="Pelanggan:" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                <ComboBox Grid.Row="0" Grid.Column="1" x:Name="CustomerComboBox" DisplayMemberPath="Name" Margin="0,5"/>
-                <Button Grid.Row="0" Grid.Column="2" Content="Pelanggan Baru" Click="NewCustomerButton_Click" Margin="10,5"/>
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Pelanggan:" Style="{StaticResource ModernTextBlock}"/>
+                <Grid Grid.Row="0" Grid.Column="1" Margin="0,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <ComboBox Grid.Column="0" x:Name="CustomerComboBox" DisplayMemberPath="Name" Style="{StaticResource ModernComboBox}"/>
+                    <Button Grid.Column="1" Content="+" Margin="8,0,0,0" Width="32" Padding="0" 
+                            ToolTip="Pelanggan Baru" Click="NewCustomerButton_Click"
+                            Style="{StaticResource PrimaryButton}"/>
+                </Grid>
                 
-                <TextBlock Grid.Row="1" Grid.Column="0" Text="No. Telp:" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                <TextBox Grid.Row="1" Grid.Column="1" x:Name="PhoneTextBox" IsReadOnly="True" Margin="0,5"/>
-                <TextBlock Grid.Row="1" Grid.Column="2" Text="Alamat:" VerticalAlignment="Center" Margin="10,0,10,0"/>
-                <TextBox Grid.Row="1" Grid.Column="3" x:Name="AddressTextBox" IsReadOnly="True" Margin="0,5"/>
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="No. Telp:" Style="{StaticResource ModernTextBlock}"/>
+                <TextBox Grid.Row="1" Grid.Column="1" x:Name="PhoneTextBox" IsReadOnly="True" Style="{StaticResource ModernTextBox}"/>
+                
+                <TextBlock Grid.Row="1" Grid.Column="2" Text="Alamat:" Style="{StaticResource ModernTextBlock}" Margin="16,0,12,0"/>
+                <TextBox Grid.Row="1" Grid.Column="3" x:Name="AddressTextBox" IsReadOnly="True" Style="{StaticResource ModernTextBox}"/>
             </Grid>
         </GroupBox>
         
-        <!-- Service Selection -->
-        <GroupBox Grid.Row="1" Header="Layanan" Margin="0,0,0,10">
-            <Grid Margin="10">
+        <!-- Service Selection Section -->
+        <GroupBox Grid.Row="1" Header="Layanan" Style="{StaticResource ModernGroupBox}">
+            <Grid Margin="0,8,0,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
@@ -53,23 +217,33 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 
-                <TextBlock Grid.Row="0" Grid.Column="0" Text="Layanan:" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                <ComboBox Grid.Row="0" Grid.Column="1" x:Name="ServiceComboBox" DisplayMemberPath="Name" SelectionChanged="ServiceComboBox_SelectionChanged" Margin="0,5"/>
-                <TextBlock Grid.Row="0" Grid.Column="2" Text="Harga/Kg:" VerticalAlignment="Center" Margin="10,0,10,0"/>
-                <TextBox Grid.Row="0" Grid.Column="3" x:Name="PriceTextBox" IsReadOnly="True" Margin="0,5"/>
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Layanan:" Style="{StaticResource ModernTextBlock}"/>
+                <ComboBox Grid.Row="0" Grid.Column="1" x:Name="ServiceComboBox" DisplayMemberPath="Name" 
+                          SelectionChanged="ServiceComboBox_SelectionChanged" Style="{StaticResource ModernComboBox}"/>
                 
-                <TextBlock Grid.Row="1" Grid.Column="0" Text="Berat (Kg):" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                <TextBox Grid.Row="1" Grid.Column="1" x:Name="WeightTextBox" TextChanged="WeightTextBox_TextChanged" Margin="0,5"/>
-                <TextBlock Grid.Row="1" Grid.Column="2" Text="Subtotal:" VerticalAlignment="Center" Margin="10,0,10,0"/>
-                <TextBox Grid.Row="1" Grid.Column="3" x:Name="SubtotalTextBox" IsReadOnly="True" Margin="0,5"/>
+                <TextBlock Grid.Row="0" Grid.Column="2" Text="Harga/Kg:" Style="{StaticResource ModernTextBlock}" Margin="16,0,12,0"/>
+                <TextBox Grid.Row="0" Grid.Column="3" x:Name="PriceTextBox" IsReadOnly="True" Style="{StaticResource ModernTextBox}"/>
                 
-                <Button Grid.Row="1" Grid.Column="4" Content="Tambah" Click="AddServiceButton_Click" Margin="10,5"/>
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Berat (Kg):" Style="{StaticResource ModernTextBlock}"/>
+                <TextBox Grid.Row="1" Grid.Column="1" x:Name="WeightTextBox" TextChanged="WeightTextBox_TextChanged" 
+                         Style="{StaticResource ModernTextBox}"/>
+                
+                <TextBlock Grid.Row="1" Grid.Column="2" Text="Subtotal:" Style="{StaticResource ModernTextBlock}" Margin="16,0,12,0"/>
+                <TextBox Grid.Row="1" Grid.Column="3" x:Name="SubtotalTextBox" IsReadOnly="True" Style="{StaticResource ModernTextBox}"/>
+                
+                <Button Grid.Row="0" Grid.RowSpan="2" Grid.Column="4" Content="Tambah" Margin="16,0,0,0" 
+                        Click="AddServiceButton_Click" Style="{StaticResource PrimaryButton}" 
+                        Height="70" Width="100" VerticalAlignment="Center"/>
             </Grid>
         </GroupBox>
         
-        <!-- Order Items -->
-        <GroupBox Grid.Row="2" Header="Item Pesanan" Margin="0,0,0,10">
-            <DataGrid x:Name="OrderItemsDataGrid" AutoGenerateColumns="False" IsReadOnly="True" Margin="10">
+        <!-- Order Items Section -->
+        <GroupBox Grid.Row="2" Header="Item Pesanan" Style="{StaticResource ModernGroupBox}">
+            <DataGrid x:Name="OrderItemsDataGrid" Style="{StaticResource ModernDataGrid}" Margin="0,8,0,0">
+                <DataGrid.Resources>
+                    <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource DataGridColumnHeader}"/>
+                    <Style TargetType="DataGridCell" BasedOn="{StaticResource DataGridCell}"/>
+                </DataGrid.Resources>
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="No" Binding="{Binding No}" Width="50"/>
                     <DataGridTextColumn Header="Layanan" Binding="{Binding ServiceName}" Width="*"/>
@@ -80,7 +254,9 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Button Content="Hapus" Click="RemoveServiceButton_Click" 
-                                        Tag="{Binding No}" Background="#e74c3c"/>
+                                        Tag="{Binding No}" 
+                                        Style="{StaticResource DangerButton}"
+                                        Padding="8,4" Margin="4,2"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -88,7 +264,7 @@
             </DataGrid>
         </GroupBox>
         
-        <!-- Order Summary and Buttons -->
+        <!-- Order Summary and Buttons Section -->
         <Grid Grid.Row="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -96,8 +272,8 @@
             </Grid.ColumnDefinitions>
             
             <!-- Order Summary -->
-            <GroupBox Grid.Column="0" Header="Ringkasan Pesanan">
-                <Grid Margin="10">
+            <GroupBox Grid.Column="0" Header="Ringkasan Pesanan" Style="{StaticResource ModernGroupBox}">
+                <Grid Margin="0,8,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
@@ -109,26 +285,44 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     
-                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Total:" FontWeight="Bold" Margin="0,5"/>
-                    <TextBlock Grid.Row="0" Grid.Column="1" x:Name="TotalAmountTextBlock" Text="0" FontWeight="Bold" Margin="10,5" HorizontalAlignment="Right"/>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Total:" FontWeight="SemiBold" Style="{StaticResource ModernTextBlock}"/>
+                    <TextBlock Grid.Row="0" Grid.Column="1" x:Name="TotalAmountTextBlock" Text="0" FontWeight="SemiBold" 
+                               HorizontalAlignment="Right" FontSize="14" Foreground="#37474F"/>
                     
-                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Diskon:" Margin="0,5"/>
-                    <TextBox Grid.Row="1" Grid.Column="1" x:Name="DiscountTextBox" TextChanged="DiscountTextBox_TextChanged" Margin="10,5" HorizontalAlignment="Right" Width="120"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Diskon:" Style="{StaticResource ModernTextBlock}"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" x:Name="DiscountTextBox" TextChanged="DiscountTextBox_TextChanged" 
+                             HorizontalAlignment="Right" Width="120" Style="{StaticResource ModernTextBox}"/>
                     
-                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Total Akhir:" FontWeight="Bold" Margin="0,5"/>
-                    <TextBlock Grid.Row="2" Grid.Column="1" x:Name="FinalAmountTextBlock" Text="0" FontWeight="Bold" Margin="10,5" HorizontalAlignment="Right"/>
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Total Akhir:" FontWeight="SemiBold" Style="{StaticResource ModernTextBlock}"/>
+                    <TextBlock Grid.Row="2" Grid.Column="1" x:Name="FinalAmountTextBlock" Text="0" FontWeight="SemiBold" 
+                               HorizontalAlignment="Right" FontSize="16" Foreground="#3F51B5"/>
                     
-                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Catatan:" VerticalAlignment="Top" Margin="0,5"/>
-                    <TextBox Grid.Row="3" Grid.Column="1" x:Name="NotesTextBox" Margin="10,5" Height="60" TextWrapping="Wrap" AcceptsReturn="True"/>
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Catatan:" VerticalAlignment="Top" Style="{StaticResource ModernTextBlock}" Margin="0,8,12,0"/>
+                    <TextBox Grid.Row="3" Grid.Column="1" x:Name="NotesTextBox" Margin="0,8,0,0" Height="80" 
+                             TextWrapping="Wrap" AcceptsReturn="True" Style="{StaticResource ModernTextBox}"/>
                 </Grid>
             </GroupBox>
             
             <!-- Action Buttons -->
-            <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0">
+            <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="20,0,0,0">
                 <Button x:Name="SaveOrderButton" Content="Simpan Pesanan" Click="SaveOrderButton_Click" 
-                        Height="40" Width="150" Margin="0,5" Background="#4CAF50"/>
+                        Width="160" Height="48" Margin="0,0,0,12"
+                        Style="{StaticResource SuccessButton}">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="4"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
                 <Button x:Name="CancelButton" Content="Batal" Click="CancelButton_Click" 
-                        Height="40" Width="150" Margin="0,5" Background="#e74c3c"/>
+                        Width="160" Height="48"
+                        Style="{StaticResource DangerButton}">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="4"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
             </StackPanel>
         </Grid>
     </Grid>

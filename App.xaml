@@ -7,61 +7,27 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <!-- MahApps.Metro -->
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                
+                <!-- Tema - Pilih salah satu tema di bawah ini -->
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Light.Blue.xaml" />
+                
+                <!-- Warna Sekunder untuk Aplikasi -->
                 <ResourceDictionary>
-                    <!-- Converters -->
-                    <converters:BoolToStatusConverter x:Key="BoolToStatusConverter"/>
-                    <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
-                    <!-- Colors -->
-                    <SolidColorBrush x:Key="PrimaryColor" Color="#3498db"/>
-                    <SolidColorBrush x:Key="SecondaryColor" Color="#2ecc71"/>
-                    <SolidColorBrush x:Key="BackgroundColor" Color="#f5f5f5"/>
-                    <SolidColorBrush x:Key="TextColor" Color="#333333"/>
-                    
-                    <!-- Button Style -->
-                    <Style TargetType="Button">
-                        <Setter Property="Background" Value="{StaticResource PrimaryColor}"/>
-                        <Setter Property="Foreground" Value="White"/>
-                        <Setter Property="Padding" Value="15,8"/>
-                        <Setter Property="Margin" Value="5"/>
-                        <Setter Property="BorderThickness" Value="0"/>
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="Button">
-                                    <Border Background="{TemplateBinding Background}" 
-                                            CornerRadius="4">
-                                        <ContentPresenter HorizontalAlignment="Center" 
-                                                          VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#2980b9"/>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                    
-                    <!-- TextBox Style -->
-                    <Style TargetType="TextBox">
-                        <Setter Property="Padding" Value="8,5"/>
-                        <Setter Property="Margin" Value="5"/>
-                        <Setter Property="BorderThickness" Value="1"/>
-                        <Setter Property="BorderBrush" Value="#cccccc"/>
-                    </Style>
-                    
-                    <!-- DataGrid Style -->
-                    <Style TargetType="DataGrid">
-                        <Setter Property="Background" Value="White"/>
-                        <Setter Property="BorderThickness" Value="1"/>
-                        <Setter Property="BorderBrush" Value="#dddddd"/>
-                        <Setter Property="RowBackground" Value="White"/>
-                        <Setter Property="AlternatingRowBackground" Value="#f9f9f9"/>
-                        <Setter Property="HorizontalGridLinesBrush" Value="#eeeeee"/>
-                        <Setter Property="VerticalGridLinesBrush" Value="#eeeeee"/>
-                    </Style>
+                    <!-- Warna default untuk aplikasi -->
+                    <SolidColorBrush x:Key="BackgroundColor" Color="#F5F5F5"/>
+                    <SolidColorBrush x:Key="PrimaryColor" Color="#2196F3"/>
+                    <SolidColorBrush x:Key="SecondaryColor" Color="#FF9800"/>
+                    <SolidColorBrush x:Key="AccentColor" Color="#4CAF50"/>
+                    <SolidColorBrush x:Key="TextColor" Color="#212121"/>
+                    <SolidColorBrush x:Key="LightTextColor" Color="#757575"/>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
+                <converters:BoolToStatusConverter x:Key="BoolToStatusConverter"/>
+                <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+                <converters:BoolToColorConverter x:Key="BoolToColorConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

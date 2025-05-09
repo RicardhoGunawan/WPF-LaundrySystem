@@ -1,46 +1,182 @@
-﻿<Window x:Class="Laundry.MainWindow"
+﻿<mah:MetroWindow x:Class="Laundry.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Laundry"
         xmlns:views="clr-namespace:Laundry.Views"
+        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         mc:Ignorable="d"
-        Title="Aplikasi Laundry" Height="600" Width="900"
-        WindowStartupLocation="CenterScreen">
+        Title="CucianKu" Height="700" Width="1100"
+        WindowStartupLocation="CenterScreen"
+        BorderThickness="1"
+        BorderBrush="{DynamicResource MahApps.Brushes.Accent}"
+        TitleCharacterCasing="Normal">
     
-    <Grid Background="{StaticResource BackgroundColor}">
+    <mah:MetroWindow.LeftWindowCommands>
+        <mah:WindowCommands>
+            <Button ToolTip="Beranda">
+                <iconPacks:PackIconMaterial Kind="Home" />
+            </Button>
+        </mah:WindowCommands>
+    </mah:MetroWindow.LeftWindowCommands>
+    
+    <mah:MetroWindow.RightWindowCommands>
+        <mah:WindowCommands>
+            <Button ToolTip="Pengaturan">
+                <iconPacks:PackIconMaterial Kind="Cog" />
+            </Button>
+            <Button ToolTip="Tentang">
+                <iconPacks:PackIconMaterial Kind="Information" />
+            </Button>
+        </mah:WindowCommands>
+    </mah:MetroWindow.RightWindowCommands>
+    
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Header -->
-        <Border Grid.Row="0" Background="{StaticResource PrimaryColor}" Padding="15">
-            <TextBlock Text="SISTEM MANAJEMEN LAUNDRY" 
-                       FontSize="24" 
-                       FontWeight="Bold" 
-                       Foreground="White"
-                       HorizontalAlignment="Center"/>
+        <!-- Header with Gradient -->
+        <Border Grid.Row="0" Padding="20" Margin="0,0,0,10">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                    <GradientStop Color="#1976D2" Offset="0"/>
+                    <GradientStop Color="#2196F3" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.Background>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <iconPacks:PackIconMaterial Kind="WashingMachine" 
+                                         Width="40" 
+                                         Height="40" 
+                                         Foreground="White" 
+                                         VerticalAlignment="Center"/>
+                
+                <StackPanel Grid.Column="1" Margin="15,0,0,0">
+                    <TextBlock Text="SISTEM MANAJEMEN LAUNDRY" 
+                           FontSize="26" 
+                           FontWeight="Bold" 
+                           Foreground="White"/>
+                    <TextBlock Text="Kelola bisnis laundry Anda dengan mudah" 
+                           FontSize="14" 
+                           Foreground="White" 
+                           Opacity="0.8"/>
+                </StackPanel>
+                
+                <StackPanel Grid.Column="2" Orientation="Horizontal">
+                    <Button Style="{StaticResource MahApps.Styles.Button.Square}"
+                            Background="#ffffff20"
+                            Width="100" Height="60" 
+                            Margin="5,0"
+                            Foreground="White">
+                        <StackPanel>
+                            <iconPacks:PackIconMaterial Kind="CalendarToday" 
+                                                     Width="24" 
+                                                     Height="24"
+                                                     HorizontalAlignment="Center"/>
+                            <TextBlock Text="Hari Ini" 
+                                   HorizontalAlignment="Center"
+                                   Margin="0,5,0,0"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Style="{StaticResource MahApps.Styles.Button.Square}"
+                            Background="#ffffff20"
+                            Width="100" Height="60" 
+                            Margin="5,0"
+                            Foreground="White">
+                        <StackPanel>
+                            <iconPacks:PackIconMaterial Kind="BellOutline" 
+                                                     Width="24" 
+                                                     Height="24"
+                                                     HorizontalAlignment="Center"/>
+                            <TextBlock Text="Notifikasi" 
+                                   HorizontalAlignment="Center"
+                                   Margin="0,5,0,0"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
         </Border>
 
         <!-- Main Content -->
         <TabControl Grid.Row="1" Margin="10">
-            <TabItem Header="Pesanan Baru">
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" Margin="5,0">
+                        <iconPacks:PackIconMaterial Kind="CartPlus" 
+                                              Width="16" 
+                                              Height="16" 
+                                              VerticalAlignment="Center" 
+                                              Margin="0,0,5,0"/>
+                        <TextBlock Text="Pesanan Baru" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </TabItem.Header>
                 <local:NewOrderView/>
             </TabItem>
-            <TabItem Header="Daftar Pesanan">
+            
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" Margin="5,0">
+                        <iconPacks:PackIconMaterial Kind="FormatListBulleted" 
+                                              Width="16" 
+                                              Height="16" 
+                                              VerticalAlignment="Center" 
+                                              Margin="0,0,5,0"/>
+                        <TextBlock Text="Daftar Pesanan" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </TabItem.Header>
                 <views:OrderListView/>
             </TabItem>
-            <TabItem Header="Pelanggan">
+            
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" Margin="5,0">
+                        <iconPacks:PackIconMaterial Kind="AccountGroup" 
+                                              Width="16" 
+                                              Height="16" 
+                                              VerticalAlignment="Center" 
+                                              Margin="0,0,5,0"/>
+                        <TextBlock Text="Pelanggan" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </TabItem.Header>
                 <views:CustomerView/>
             </TabItem>
-            <TabItem Header="Layanan">
+            
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" Margin="5,0">
+                        <iconPacks:PackIconMaterial Kind="Tag" 
+                                              Width="16" 
+                                              Height="16" 
+                                              VerticalAlignment="Center" 
+                                              Margin="0,0,5,0"/>
+                        <TextBlock Text="Layanan" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </TabItem.Header>
                 <views:ServiceView/>
             </TabItem>
-            <TabItem Header="Laporan">
+            
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" Margin="5,0">
+                        <iconPacks:PackIconMaterial Kind="ChartBar" 
+                                              Width="16" 
+                                              Height="16" 
+                                              VerticalAlignment="Center" 
+                                              Margin="0,0,5,0"/>
+                        <TextBlock Text="Laporan" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </TabItem.Header>
                 <views:ReportView/>
             </TabItem>
         </TabControl>
     </Grid>
-</Window>
+</mah:MetroWindow>
