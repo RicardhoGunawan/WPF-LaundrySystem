@@ -4,8 +4,244 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:local="clr-namespace:Laundry.Views"
-             mc:Ignorable="d">
-    <Grid Margin="10">
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             mc:Ignorable="d"
+             Background="#F5F7FA">
+    
+    <UserControl.Resources>
+        <!-- Modern style resources -->
+        <Style x:Key="ModernTextBlock" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,0,12,0"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="Foreground" Value="#37474F"/>
+        </Style>
+        
+        <Style x:Key="ModernTextBox" TargetType="TextBox">
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Padding" Value="8,5"/>
+            <Setter Property="Margin" Value="0,5"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#DADCE0"/>
+            <Setter Property="Background" Value="White"/>
+        </Style>
+        
+        <Style x:Key="ModernComboBox" TargetType="ComboBox">
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Padding" Value="8,5"/>
+            <Setter Property="Margin" Value="0,5"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#DADCE0"/>
+            <Setter Property="Background" Value="White"/>
+        </Style>
+        
+        <Style x:Key="ModernDatePicker" TargetType="DatePicker">
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Padding" Value="8,5"/>
+            <Setter Property="Margin" Value="0,5"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#DADCE0"/>
+            <Setter Property="Background" Value="White"/>
+        </Style>
+        
+        <Style x:Key="PrimaryButton" TargetType="Button">
+            <Setter Property="Background" Value="#3F51B5"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="16,8"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="4" 
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                BorderBrush="{TemplateBinding BorderBrush}">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                              VerticalAlignment="Center" 
+                                              Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#303F9F"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#1A237E"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <Style x:Key="InfoButton" TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+            <Setter Property="Background" Value="#2196F3"/>
+            <Setter Property="Padding" Value="12,4"/>
+            <Setter Property="Margin" Value="0,0,8,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="4" 
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                BorderBrush="{TemplateBinding BorderBrush}">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                            VerticalAlignment="Center" 
+                                            Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#1976D2"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#0D47A1"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <Style x:Key="SuccessButton" TargetType="Button" BasedOn="{StaticResource InfoButton}">
+            <Setter Property="Background" Value="#2ecc71"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="4" 
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                BorderBrush="{TemplateBinding BorderBrush}">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                            VerticalAlignment="Center" 
+                                            Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#27ae60"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#219653"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <Style x:Key="ModernCardPanel" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="Padding" Value="16"/>
+            <Setter Property="Margin" Value="0,0,0,16"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect ShadowDepth="1" BlurRadius="4" Opacity="0.15" Direction="270" Color="#000000"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <Style x:Key="StatsCardPanel" TargetType="Border">
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="Height" Value="120"/>
+            <Setter Property="Width" Value="250"/>
+            <Setter Property="Margin" Value="0,0,16,10"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect ShadowDepth="1" BlurRadius="4" Opacity="0.15" Direction="270" Color="#000000"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <Style x:Key="ModernDataGrid" TargetType="DataGrid">
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="RowBackground" Value="White"/>
+            <Setter Property="AlternatingRowBackground" Value="#F5F7FA"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="#E0E0E0"/>
+            <Setter Property="VerticalGridLinesBrush" Value="#E0E0E0"/>
+            <Setter Property="RowHeight" Value="42"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+        </Style>
+        
+        <Style x:Key="DataGridColumnHeader" TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="#ECEFF1"/>
+            <Setter Property="Foreground" Value="#37474F"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="BorderThickness" Value="0,0,1,1"/>
+            <Setter Property="BorderBrush" Value="#CFD8DC"/>
+        </Style>
+        
+        <Style x:Key="DataGridCell" TargetType="DataGridCell">
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="DataGridCell">
+                        <Border Padding="{TemplateBinding Padding}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                Background="{TemplateBinding Background}" 
+                                SnapsToDevicePixels="True">
+                            <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <Style x:Key="ModernTabControl" TargetType="TabControl">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+        </Style>
+        
+        <Style x:Key="ModernTabItem" TargetType="TabItem">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Border Name="Border" 
+                                Margin="0,0,2,0"
+                                Padding="16,8" 
+                                BorderThickness="0,0,0,3"
+                                BorderBrush="Transparent" 
+                                Background="Transparent">
+                            <ContentPresenter x:Name="ContentSite" 
+                                             VerticalAlignment="Center" 
+                                             HorizontalAlignment="Center" 
+                                             ContentSource="Header" 
+                                             RecognizesAccessKey="True"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Border" Property="BorderBrush" Value="#3F51B5"/>
+                                <Setter TargetName="ContentSite" Property="TextBlock.FontWeight" Value="SemiBold"/>
+                                <Setter TargetName="ContentSite" Property="TextBlock.Foreground" Value="#3F51B5"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="False">
+                                <Setter TargetName="ContentSite" Property="TextBlock.Foreground" Value="#616161"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ContentSite" Property="TextBlock.Foreground" Value="#3F51B5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    
+    <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -13,115 +249,350 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         
-        <!-- Header -->
-        <TextBlock Grid.Row="0" Text="Laporan Laundry" 
-                   FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
+        <!-- Header section with gradient -->
+        <Border Grid.Row="0" Style="{StaticResource ModernCardPanel}" Padding="0" Margin="0,0,0,16">
+            <Grid>
+                <Border Background="#3F51B5" CornerRadius="6,6,0,0" Padding="16,12">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <iconPacks:PackIconMaterial Kind="ChartBar" 
+                                           Width="32" 
+                                           Height="32" 
+                                           Foreground="White" 
+                                           VerticalAlignment="Center"/>
+                        
+                        <StackPanel Grid.Column="1" Margin="15,0,0,0">
+                            <TextBlock Text="LAPORAN LAUNDRY" 
+                               FontSize="22" 
+                               FontWeight="Bold" 
+                               Foreground="White"/>
+                            <TextBlock Text="Analisis data laundry untuk pengambilan keputusan" 
+                               FontSize="14" 
+                               Foreground="White" 
+                               Opacity="0.8"/>
+                        </StackPanel>
+                        
+                        <Button Grid.Column="2" 
+                                Style="{StaticResource PrimaryButton}"
+                                Background="#5C6BC0"
+                                Padding="16,8"
+                                Margin="0"
+                                Click="PrintButton_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconMaterial Kind="Printer" 
+                                                   Width="20" 
+                                                   Height="20"
+                                                   VerticalAlignment="Center"/>
+                                <TextBlock Text="Print Laporan" 
+                                   Margin="8,0,0,0"
+                                   VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
         
-        <!-- Filters -->
-        <Grid Grid.Row="1" Margin="0,0,0,10">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            
-            <TextBlock Grid.Column="0" Text="Periode:" VerticalAlignment="Center" Margin="0,0,10,0"/>
-            <ComboBox Grid.Column="1" x:Name="PeriodComboBox" Width="150" Margin="0,0,20,0" SelectionChanged="PeriodComboBox_SelectionChanged"/>
-            
-            <TextBlock Grid.Column="2" Text="Dari:" VerticalAlignment="Center" Margin="0,0,10,0"/>
-            <DatePicker Grid.Column="3" x:Name="StartDatePicker" Width="120" Margin="0,0,10,0"/>
-            
-            <TextBlock Grid.Column="4" Text="Sampai:" VerticalAlignment="Center" Margin="0,0,10,0"/>
-            <DatePicker Grid.Column="5" x:Name="EndDatePicker" Width="120" Margin="0,0,20,0"/>
-            
-            <Button Grid.Column="7" Content="Generate Laporan" Click="GenerateReportButton_Click" Width="150"/>
-        </Grid>
-        
-        <!-- Report Tabs -->
-        <TabControl Grid.Row="2" x:Name="ReportTabControl">
-            <TabItem Header="Ringkasan">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
+        <!-- Filter Card -->
+        <Border Grid.Row="1" Style="{StaticResource ModernCardPanel}" Margin="0,0,0,16">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                
+                <!-- Filter Title -->
+                <Grid Grid.Row="0" Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
                     
-                    <StackPanel Grid.Row="0" Orientation="Vertical" Margin="10">
-                        <TextBlock Text="Ringkasan Periode" FontWeight="Bold" FontSize="16" Margin="0,0,0,10"/>
-                        <WrapPanel>
-                            <Border Background="#3498db" Width="200" Height="100" Margin="0,0,10,10" CornerRadius="5">
-                                <StackPanel Margin="10" VerticalAlignment="Center">
-                                    <TextBlock Text="Total Pesanan" Foreground="White"/>
-                                    <TextBlock x:Name="TotalOrdersTextBlock" Text="0" FontSize="24" FontWeight="Bold" Foreground="White"/>
-                                </StackPanel>
-                            </Border>
-                            
-                            <Border Background="#2ecc71" Width="200" Height="100" Margin="0,0,10,10" CornerRadius="5">
-                                <StackPanel Margin="10" VerticalAlignment="Center">
-                                    <TextBlock Text="Total Pendapatan" Foreground="White"/>
-                                    <TextBlock x:Name="TotalRevenueTextBlock" Text="Rp 0" FontSize="24" FontWeight="Bold" Foreground="White"/>
-                                </StackPanel>
-                            </Border>
-                            
-                            <Border Background="#e74c3c" Width="200" Height="100" Margin="0,0,10,10" CornerRadius="5">
-                                <StackPanel Margin="10" VerticalAlignment="Center">
-                                    <TextBlock Text="Pesanan Belum Dibayar" Foreground="White"/>
-                                    <TextBlock x:Name="UnpaidOrdersTextBlock" Text="0" FontSize="24" FontWeight="Bold" Foreground="White"/>
-                                </StackPanel>
-                            </Border>
-                            
-                            <Border Background="#9b59b6" Width="200" Height="100" Margin="0,0,10,10" CornerRadius="5">
-                                <StackPanel Margin="10" VerticalAlignment="Center">
-                                    <TextBlock Text="Pesanan Selesai" Foreground="White"/>
-                                    <TextBlock x:Name="CompletedOrdersTextBlock" Text="0" FontSize="24" FontWeight="Bold" Foreground="White"/>
-                                </StackPanel>
-                            </Border>
-                        </WrapPanel>
-                    </StackPanel>
+                    <iconPacks:PackIconMaterial Kind="Filter" 
+                                       Width="20" 
+                                       Height="20"
+                                       Foreground="#3F51B5" 
+                                       VerticalAlignment="Center"/>
                     
-                    <DataGrid Grid.Row="1" x:Name="SummaryDataGrid" AutoGenerateColumns="False" IsReadOnly="True">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Tanggal" Binding="{Binding Date, StringFormat='{}{0:dd/MM/yyyy}'}" Width="120"/>
-                            <DataGridTextColumn Header="Jumlah Pesanan" Binding="{Binding OrderCount}" Width="120"/>
-                            <DataGridTextColumn Header="Total (Rp)" Binding="{Binding TotalAmount, StringFormat='{}{0:N0}'}" Width="150"/>
-                            <DataGridTextColumn Header="Rata-rata (Rp)" Binding="{Binding AverageAmount, StringFormat='{}{0:N0}'}" Width="150"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
+                    <TextBlock Grid.Column="1" 
+                               Text="Filter Laporan" 
+                               FontSize="16" 
+                               FontWeight="SemiBold" 
+                               Foreground="#3F51B5" 
+                               Margin="8,0,0,0"/>
                 </Grid>
-            </TabItem>
-            
-            <TabItem Header="Layanan">
-                <DataGrid x:Name="ServiceReportDataGrid" AutoGenerateColumns="False" IsReadOnly="True">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Nama Layanan" Binding="{Binding ServiceName}" Width="*"/>
-                        <DataGridTextColumn Header="Jumlah Pesanan" Binding="{Binding OrderCount}" Width="120"/>
-                        <DataGridTextColumn Header="Total Berat (Kg)" Binding="{Binding TotalWeight, StringFormat='{}{0:N1}'}" Width="120"/>
-                        <DataGridTextColumn Header="Total Pendapatan (Rp)" Binding="{Binding TotalRevenue, StringFormat='{}{0:N0}'}" Width="150"/>
-                        <DataGridTextColumn Header="Persentase" Binding="{Binding Percentage, StringFormat='{}{0:P1}'}" Width="100"/>
-                    </DataGrid.Columns>
-                </DataGrid>
-            </TabItem>
-            
-            <TabItem Header="Pelanggan">
-                <DataGrid x:Name="CustomerReportDataGrid" AutoGenerateColumns="False" IsReadOnly="True">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Nama Pelanggan" Binding="{Binding CustomerName}" Width="*"/>
-                        <DataGridTextColumn Header="Jumlah Pesanan" Binding="{Binding OrderCount}" Width="120"/>
-                        <DataGridTextColumn Header="Total Pengeluaran (Rp)" Binding="{Binding TotalSpent, StringFormat='{}{0:N0}'}" Width="150"/>
-                        <DataGridTextColumn Header="Rata-rata per Pesanan (Rp)" Binding="{Binding AveragePerOrder, StringFormat='{}{0:N0}'}" Width="170"/>
-                        <DataGridTextColumn Header="Pesanan Terakhir" Binding="{Binding LastOrderDate, StringFormat='{}{0:dd/MM/yyyy}'}" Width="120"/>
-                    </DataGrid.Columns>
-                </DataGrid>
-            </TabItem>
-        </TabControl>
+                
+                <!-- Filter Controls -->
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="180"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <TextBlock Grid.Column="0" Text="Periode:" Style="{StaticResource ModernTextBlock}"/>
+                    <ComboBox Grid.Column="1" x:Name="PeriodComboBox" Style="{StaticResource ModernComboBox}" Margin="0,5,20,5" SelectionChanged="PeriodComboBox_SelectionChanged"/>
+                    
+                    <TextBlock Grid.Column="2" Text="Dari:" Style="{StaticResource ModernTextBlock}"/>
+                    <DatePicker Grid.Column="3" x:Name="StartDatePicker" Style="{StaticResource ModernDatePicker}" Margin="0,5,20,5"/>
+                    
+                    <TextBlock Grid.Column="4" Text="Sampai:" Style="{StaticResource ModernTextBlock}"/>
+                    <DatePicker Grid.Column="5" x:Name="EndDatePicker" Style="{StaticResource ModernDatePicker}" Margin="0,5,20,5"/>
+                    
+                    <Button Grid.Column="7" 
+                            Click="GenerateReportButton_Click" 
+                            Style="{StaticResource SuccessButton}"
+                            Width="180">
+                        <StackPanel Orientation="Horizontal">
+                            <iconPacks:PackIconMaterial Kind="FileChart" 
+                                               Width="16" 
+                                               Height="16"
+                                               VerticalAlignment="Center"
+                                               Margin="0,0,8,0"/>
+                            <TextBlock Text="Generate Laporan"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </Grid>
+        </Border>
         
-        <!-- Export Button -->
-        <Button Grid.Row="3" Content="Print Laporan" Click="PrintButton_Click" 
-                HorizontalAlignment="Right" Width="150" Margin="0,10,0,0"/>
+        <!-- Report Content -->
+        <Border Grid.Row="2" Style="{StaticResource ModernCardPanel}" Padding="0" Margin="0,0,0,16">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                
+                <!-- Tab Header -->
+                <Border Grid.Row="0" Background="#3F51B5" CornerRadius="6,6,0,0" Padding="16,8">
+                    <TextBlock Text="DATA LAPORAN" FontSize="16" FontWeight="SemiBold" Foreground="White"/>
+                </Border>
+                
+                <!-- Report Tabs -->
+                <TabControl Grid.Row="1" x:Name="ReportTabControl" Margin="16,16,16,0" 
+                            Style="{StaticResource ModernTabControl}">
+                    <TabItem Header="RINGKASAN" Style="{StaticResource ModernTabItem}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            
+                            <!-- Stats Cards -->
+                            <WrapPanel Grid.Row="0" Margin="0,10,0,20">
+                                <Border Style="{StaticResource StatsCardPanel}" Background="#3498db">
+                                    <Grid Margin="16">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <TextBlock Grid.Row="0" Grid.Column="0" 
+                                                   Text="TOTAL PESANAN" 
+                                                   FontSize="14" 
+                                                   FontWeight="SemiBold" 
+                                                   Foreground="White" 
+                                                   Opacity="0.9"/>
+                                        
+                                        <iconPacks:PackIconMaterial Grid.Row="0" Grid.Column="1" 
+                                                           Kind="CartOutline" 
+                                                           Width="24" 
+                                                           Height="24" 
+                                                           Foreground="White" 
+                                                           Opacity="0.7"/>
+                                        
+                                        <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
+                                                   x:Name="TotalOrdersTextBlock" 
+                                                   Text="0" 
+                                                   FontSize="32" 
+                                                   FontWeight="Bold" 
+                                                   Foreground="White" 
+                                                   VerticalAlignment="Bottom"/>
+                                    </Grid>
+                                </Border>
+                                
+                                <Border Style="{StaticResource StatsCardPanel}" Background="#2ecc71">
+                                    <Grid Margin="16">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <TextBlock Grid.Row="0" Grid.Column="0" 
+                                                   Text="TOTAL PENDAPATAN" 
+                                                   FontSize="14" 
+                                                   FontWeight="SemiBold" 
+                                                   Foreground="White" 
+                                                   Opacity="0.9"/>
+                                        
+                                        <iconPacks:PackIconMaterial Grid.Row="0" Grid.Column="1" 
+                                                           Kind="CurrencyUsd" 
+                                                           Width="24" 
+                                                           Height="24" 
+                                                           Foreground="White" 
+                                                           Opacity="0.7"/>
+                                        
+                                        <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
+                                                   x:Name="TotalRevenueTextBlock" 
+                                                   Text="Rp 0" 
+                                                   FontSize="32" 
+                                                   FontWeight="Bold" 
+                                                   Foreground="White" 
+                                                   VerticalAlignment="Bottom"/>
+                                    </Grid>
+                                </Border>
+                                
+                                <Border Style="{StaticResource StatsCardPanel}" Background="#e74c3c">
+                                    <Grid Margin="16">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <TextBlock Grid.Row="0" Grid.Column="0" 
+                                                   Text="BELUM DIBAYAR" 
+                                                   FontSize="14" 
+                                                   FontWeight="SemiBold" 
+                                                   Foreground="White" 
+                                                   Opacity="0.9"/>
+                                        
+                                        <iconPacks:PackIconMaterial Grid.Row="0" Grid.Column="1" 
+                                                           Kind="CreditCardOff" 
+                                                           Width="24" 
+                                                           Height="24" 
+                                                           Foreground="White" 
+                                                           Opacity="0.7"/>
+                                        
+                                        <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
+                                                   x:Name="UnpaidOrdersTextBlock" 
+                                                   Text="0" 
+                                                   FontSize="32" 
+                                                   FontWeight="Bold" 
+                                                   Foreground="White" 
+                                                   VerticalAlignment="Bottom"/>
+                                    </Grid>
+                                </Border>
+                                
+                                <Border Style="{StaticResource StatsCardPanel}" Background="#9b59b6">
+                                    <Grid Margin="16">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <TextBlock Grid.Row="0" Grid.Column="0" 
+                                                   Text="PESANAN SELESAI" 
+                                                   FontSize="14" 
+                                                   FontWeight="SemiBold" 
+                                                   Foreground="White" 
+                                                   Opacity="0.9"/>
+                                        
+                                        <iconPacks:PackIconMaterial Grid.Row="0" Grid.Column="1" 
+                                                           Kind="CheckCircleOutline" 
+                                                           Width="24" 
+                                                           Height="24" 
+                                                           Foreground="White" 
+                                                           Opacity="0.7"/>
+                                        
+                                        <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
+                                                   x:Name="CompletedOrdersTextBlock" 
+                                                   Text="0" 
+                                                   FontSize="32" 
+                                                   FontWeight="Bold" 
+                                                   Foreground="White" 
+                                                   VerticalAlignment="Bottom"/>
+                                    </Grid>
+                                </Border>
+                            </WrapPanel>
+                            
+                            <!-- Summary DataGrid -->
+                            <DataGrid Grid.Row="1" x:Name="SummaryDataGrid" 
+                                      Style="{StaticResource ModernDataGrid}"
+                                      MinHeight="300">
+                                <DataGrid.Resources>
+                                    <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource DataGridColumnHeader}"/>
+                                    <Style TargetType="DataGridCell" BasedOn="{StaticResource DataGridCell}"/>
+                                </DataGrid.Resources>
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Tanggal" Binding="{Binding Date, StringFormat='{}{0:dd/MM/yyyy}'}" Width="120"/>
+                                    <DataGridTextColumn Header="Jumlah Pesanan" Binding="{Binding OrderCount}" Width="120"/>
+                                    <DataGridTextColumn Header="Total (Rp)" Binding="{Binding TotalAmount, StringFormat='{}{0:N0}'}" Width="150"/>
+                                    <DataGridTextColumn Header="Rata-rata (Rp)" Binding="{Binding AverageAmount, StringFormat='{}{0:N0}'}" Width="150"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                    </TabItem>
+                    
+                    <TabItem Header="LAYANAN" Style="{StaticResource ModernTabItem}">
+                        <DataGrid x:Name="ServiceReportDataGrid" 
+                                  Style="{StaticResource ModernDataGrid}">
+                            <DataGrid.Resources>
+                                <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource DataGridColumnHeader}"/>
+                                <Style TargetType="DataGridCell" BasedOn="{StaticResource DataGridCell}"/>
+                            </DataGrid.Resources>
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Nama Layanan" Binding="{Binding ServiceName}" Width="*"/>
+                                <DataGridTextColumn Header="Jumlah Pesanan" Binding="{Binding OrderCount}" Width="120"/>
+                                <DataGridTextColumn Header="Total Berat (Kg)" Binding="{Binding TotalWeight, StringFormat='{}{0:N1}'}" Width="120"/>
+                                <DataGridTextColumn Header="Total Pendapatan (Rp)" Binding="{Binding TotalRevenue, StringFormat='{}{0:N0}'}" Width="150"/>
+                                <DataGridTextColumn Header="Persentase" Binding="{Binding Percentage, StringFormat='{}{0:P1}'}" Width="100"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </TabItem>
+                    
+                    <TabItem Header="PELANGGAN" Style="{StaticResource ModernTabItem}">
+                        <DataGrid x:Name="CustomerReportDataGrid" 
+                                  Style="{StaticResource ModernDataGrid}">
+                            <DataGrid.Resources>
+                                <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource DataGridColumnHeader}"/>
+                                <Style TargetType="DataGridCell" BasedOn="{StaticResource DataGridCell}"/>
+                            </DataGrid.Resources>
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Nama Pelanggan" Binding="{Binding CustomerName}" Width="*"/>
+                                <DataGridTextColumn Header="Jumlah Pesanan" Binding="{Binding OrderCount}" Width="120"/>
+                                <DataGridTextColumn Header="Total Pengeluaran (Rp)" Binding="{Binding TotalSpent, StringFormat='{}{0:N0}'}" Width="150"/>
+                                <DataGridTextColumn Header="Rata-rata per Pesanan (Rp)" Binding="{Binding AveragePerOrder, StringFormat='{}{0:N0}'}" Width="170"/>
+                                <DataGridTextColumn Header="Pesanan Terakhir" Binding="{Binding LastOrderDate, StringFormat='{}{0:dd/MM/yyyy}'}" Width="120"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </TabItem>
+                </TabControl>
+            </Grid>
+        </Border>
+        
+        <!-- Export Button (Mobile-friendly placement at bottom) -->
+        <Button Grid.Row="3" Style="{StaticResource SuccessButton}" HorizontalAlignment="Right" Click="PrintButton_Click" Margin="0,0,0,0">
+            <StackPanel Orientation="Horizontal">
+                <iconPacks:PackIconMaterial Kind="FilePdfBox" Width="16" Height="16" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <TextBlock Text="Ekspor PDF" VerticalAlignment="Center" />
+            </StackPanel>
+        </Button>
     </Grid>
 </UserControl>

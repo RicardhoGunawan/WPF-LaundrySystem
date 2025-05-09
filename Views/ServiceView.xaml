@@ -4,83 +4,434 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:local="clr-namespace:Laundry.Views"
-             mc:Ignorable="d">
-    <Grid Margin="10">
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             mc:Ignorable="d"
+             Background="#F5F7FA">
+    
+    <UserControl.Resources>
+        <!-- Modern style resources -->
+        <Style x:Key="ModernTextBlock" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,0,12,0"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="Foreground" Value="#37474F"/>
+        </Style>
+        
+        <Style x:Key="ModernTextBox" TargetType="TextBox">
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Padding" Value="8,5"/>
+            <Setter Property="Margin" Value="0,5"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#DADCE0"/>
+            <Setter Property="Background" Value="White"/>
+        </Style>
+        
+        <Style x:Key="PrimaryButton" TargetType="Button">
+            <Setter Property="Background" Value="#3F51B5"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="16,8"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="4" 
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                BorderBrush="{TemplateBinding BorderBrush}">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                              VerticalAlignment="Center" 
+                                              Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#303F9F"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#1A237E"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <Style x:Key="InfoButton" TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+            <Setter Property="Background" Value="#2196F3"/>
+            <Setter Property="Padding" Value="12,4"/>
+            <Setter Property="Margin" Value="0,0,8,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="4" 
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                BorderBrush="{TemplateBinding BorderBrush}">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                            VerticalAlignment="Center" 
+                                            Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#1976D2"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#0D47A1"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <Style x:Key="DangerButton" TargetType="Button" BasedOn="{StaticResource InfoButton}">
+            <Setter Property="Background" Value="#e74c3c"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="4" 
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                BorderBrush="{TemplateBinding BorderBrush}">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                            VerticalAlignment="Center" 
+                                            Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#c0392b"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#a93226"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <Style x:Key="ModernCardPanel" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="Padding" Value="16"/>
+            <Setter Property="Margin" Value="0,0,0,16"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect ShadowDepth="1" BlurRadius="4" Opacity="0.15" Direction="270" Color="#000000"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <Style x:Key="ModernDataGrid" TargetType="DataGrid">
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="RowBackground" Value="White"/>
+            <Setter Property="AlternatingRowBackground" Value="#F5F7FA"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="#E0E0E0"/>
+            <Setter Property="VerticalGridLinesBrush" Value="#E0E0E0"/>
+            <Setter Property="RowHeight" Value="40"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="MinHeight" Value="250"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="ColumnWidth" Value="SizeToHeader"/>
+            <Setter Property="CanUserResizeColumns" Value="True"/>
+            <Setter Property="GridLinesVisibility" Value="All"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+        </Style>
+        
+        <Style x:Key="DataGridColumnHeader" TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="#ECEFF1"/>
+            <Setter Property="Foreground" Value="#37474F"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="BorderThickness" Value="1,1,1,1"/>
+            <Setter Property="BorderBrush" Value="#CFD8DC"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+        
+        <Style x:Key="DataGridCell" TargetType="DataGridCell">
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="DataGridCell">
+                        <Border Padding="{TemplateBinding Padding}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                Background="{TemplateBinding Background}" 
+                                SnapsToDevicePixels="True">
+                            <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <Style x:Key="ScrollViewerStyle" TargetType="ScrollViewer">
+            <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="HorizontalScrollBarVisibility" Value="Auto"/>
+        </Style>
+    </UserControl.Resources>
+    
+    <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="350"/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
         
-        <!-- Service List -->
-        <Grid Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Margin="0,0,10,0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            
-            <TextBlock Grid.Row="0" Text="Daftar Layanan" FontSize="16" FontWeight="Bold" Margin="0,0,0,10"/>
-            
-            <DataGrid Grid.Row="1" x:Name="ServicesDataGrid" AutoGenerateColumns="False" IsReadOnly="True"
-                      SelectionChanged="ServicesDataGrid_SelectionChanged">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="ID" Binding="{Binding ServiceId}" Width="60"/>
-                    <DataGridTextColumn Header="Nama Layanan" Binding="{Binding Name}" Width="*"/>
-                    <DataGridTextColumn Header="Harga/Kg" Binding="{Binding PricePerKg, StringFormat='{}{0:N0}'}" Width="100"/>
-                    <DataGridTextColumn Header="Est. Jam" Binding="{Binding EstimatedHours}" Width="80"/>
-                </DataGrid.Columns>
-            </DataGrid>
-        </Grid>
+        <!-- Header section -->
+        <Border Grid.Row="0" Grid.ColumnSpan="2" Style="{StaticResource ModernCardPanel}" Padding="0" Margin="0,0,0,16">
+            <Grid>
+                <Border Background="#3F51B5" CornerRadius="6,6,0,0" Padding="16,12">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <iconPacks:PackIconMaterial Kind="WashingMachine" 
+                                           Width="32" 
+                                           Height="32" 
+                                           Foreground="White" 
+                                           VerticalAlignment="Center"/>
+                        
+                        <StackPanel Grid.Column="1" Margin="15,0,0,0">
+                            <TextBlock Text="DATA LAYANAN" 
+                               FontSize="22" 
+                               FontWeight="Bold" 
+                               Foreground="White"/>
+                            <TextBlock Text="Kelola informasi layanan laundry Anda" 
+                               FontSize="14" 
+                               Foreground="White" 
+                               Opacity="0.8"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
         
-        <!-- Service Form -->
-        <GroupBox Grid.Row="0" Grid.Column="1" Header="Tambah/Edit Layanan" Margin="0,0,0,10">
-            <Grid Margin="10">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                
-                <TextBlock Grid.Row="0" Text="ID:" Margin="0,5"/>
-                <TextBox Grid.Row="1" x:Name="ServiceIdTextBox" IsReadOnly="True" Margin="0,0,0,10"/>
-                
-                <TextBlock Grid.Row="2" Text="Nama Layanan:" Margin="0,5"/>
-                <TextBox Grid.Row="3" x:Name="NameTextBox" Margin="0,0,0,10"/>
-                
-                <Grid Grid.Row="4">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
+        <!-- Main Content Area with ScrollViewer -->
+        <ScrollViewer Grid.Row="1" Grid.Column="0" 
+                      VerticalScrollBarVisibility="Auto" 
+                      HorizontalScrollBarVisibility="Auto"
+                      Margin="0,0,8,0">
+            <!-- Services List -->
+            <Border Style="{StaticResource ModernCardPanel}" Padding="0">
+                <Grid>
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Header -->
+                    <Border Grid.Row="0" Background="#3F51B5" CornerRadius="6,6,0,0">
+                        <Grid Margin="16,12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <iconPacks:PackIconMaterial Kind="FormatListBulleted" 
+                                             Width="24" 
+                                             Height="24" 
+                                             Foreground="White" 
+                                             VerticalAlignment="Center"/>
+                            
+                            <TextBlock Grid.Column="1" 
+                               Text="Daftar Layanan" 
+                               Foreground="White" 
+                               FontWeight="SemiBold" 
+                               FontSize="16" 
+                               Margin="12,0,0,0"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- DataGrid -->
+                    <DataGrid Grid.Row="1"
+                              x:Name="ServicesDataGrid"
+                              Style="{StaticResource ModernDataGrid}"
+                              BorderThickness="0"
+                              Margin="1,0,1,1"
+                              MinHeight="300"
+                              MaxHeight="500"
+                              SelectionChanged="ServicesDataGrid_SelectionChanged"
+                              ColumnWidth="SizeToHeader"
+                              HorizontalAlignment="Stretch"
+                              HorizontalContentAlignment="Stretch"
+                              CanUserResizeColumns="True"
+                              GridLinesVisibility="All">
+                        <DataGrid.Resources>
+                            <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource DataGridColumnHeader}"/>
+                            <Style TargetType="DataGridCell" BasedOn="{StaticResource DataGridCell}"/>
+                        </DataGrid.Resources>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding ServiceId}" Width="60" MinWidth="40"/>
+                            <DataGridTextColumn Header="Nama Layanan" Binding="{Binding Name}" Width="*" MinWidth="150"/>
+                            <DataGridTextColumn Header="Harga/Kg" Binding="{Binding PricePerKg, StringFormat='{}{0:N0}'}" Width="100" MinWidth="80"/>
+                            <DataGridTextColumn Header="Est. Jam" Binding="{Binding EstimatedHours}" Width="80" MinWidth="60"/>
+                            <DataGridTemplateColumn Header="Aksi" Width="140" MinWidth="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" Margin="2" HorizontalAlignment="Center">
+                                            <Button Tag="{Binding ServiceId}"
+                                                    Style="{StaticResource InfoButton}"
+                                                    Padding="6,2"
+                                                    Margin="0,0,4,0"
+                                                    MinWidth="50">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <iconPacks:PackIconMaterial Kind="Pencil" Width="12" Height="12"/>
+                                                    <TextBlock Text="Edit" Margin="4,0,0,0" FontSize="11"/>
+                                                </StackPanel>
+                                            </Button>
+                                            <Button Tag="{Binding ServiceId}"
+                                                    Style="{StaticResource DangerButton}"
+                                                    Padding="6,2"
+                                                    MinWidth="50">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <iconPacks:PackIconMaterial Kind="Delete" Width="12" Height="12"/>
+                                                    <TextBlock Text="Hapus" Margin="4,0,0,0" FontSize="11"/>
+                                                </StackPanel>
+                                            </Button>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </Border>
+        </ScrollViewer>
+        
+        <!-- Form Area with ScrollViewer -->
+        <ScrollViewer Grid.Row="1" Grid.Column="1" 
+                      VerticalScrollBarVisibility="Auto" 
+                      HorizontalScrollBarVisibility="Auto"
+                      Margin="8,0,0,0">
+            <!-- Service Form Card -->
+            <Border Style="{StaticResource ModernCardPanel}" Padding="0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     
-                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Harga/Kg:" Margin="0,5,5,5"/>
-                    <TextBox Grid.Row="1" Grid.Column="0" x:Name="PriceTextBox" Margin="0,0,5,10"/>
+                    <!-- Form Header -->
+                    <Border Grid.Row="0" Background="#3F51B5" CornerRadius="6,6,0,0">
+                        <Grid Margin="16,12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <iconPacks:PackIconMaterial Kind="FormSelect" 
+                                             Width="24" 
+                                             Height="24" 
+                                             Foreground="White" 
+                                             VerticalAlignment="Center"/>
+                            
+                            <TextBlock Grid.Column="1" 
+                               Text="Form Layanan" 
+                               Foreground="White" 
+                               FontWeight="SemiBold" 
+                               FontSize="16" 
+                               Margin="12,0,0,0"/>
+                        </Grid>
+                    </Border>
                     
-                    <TextBlock Grid.Row="0" Grid.Column="1" Text="Estimasi Jam:" Margin="5,5,0,5"/>
-                    <TextBox Grid.Row="1" Grid.Column="1" x:Name="EstimatedHoursTextBox" Margin="5,0,0,10"/>
+                    <!-- Form Content -->
+                    <Grid Grid.Row="1" Margin="16,16,16,8">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        
+                        <TextBlock Grid.Row="0" Text="ID:" Style="{StaticResource ModernTextBlock}"/>
+                        <TextBox Grid.Row="1" x:Name="ServiceIdTextBox" IsReadOnly="True" Style="{StaticResource ModernTextBox}" Margin="0,0,0,10"/>
+                        
+                        <TextBlock Grid.Row="2" Text="Nama Layanan:" Style="{StaticResource ModernTextBlock}"/>
+                        <TextBox Grid.Row="3" x:Name="NameTextBox" Style="{StaticResource ModernTextBox}" Margin="0,0,0,10"/>
+                        
+                        <Grid Grid.Row="4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Harga/Kg:" Style="{StaticResource ModernTextBlock}" Margin="0,0,5,0"/>
+                            <TextBox Grid.Row="1" Grid.Column="0" x:Name="PriceTextBox" Style="{StaticResource ModernTextBox}" Margin="0,0,5,10"/>
+                            
+                            <TextBlock Grid.Row="0" Grid.Column="1" Text="Estimasi Jam:" Style="{StaticResource ModernTextBlock}" Margin="5,0,0,0"/>
+                            <TextBox Grid.Row="1" Grid.Column="1" x:Name="EstimatedHoursTextBox" Style="{StaticResource ModernTextBox}" Margin="5,0,0,10"/>
+                        </Grid>
+                        
+                        <TextBlock Grid.Row="5" Text="Deskripsi:" Style="{StaticResource ModernTextBlock}" VerticalAlignment="Top" Margin="0,0,0,5"/>
+                        <TextBox Grid.Row="6" x:Name="DescriptionTextBox" Style="{StaticResource ModernTextBox}" Height="100" 
+                                 TextWrapping="Wrap" AcceptsReturn="True" VerticalContentAlignment="Top" Margin="0,0,0,10"/>
+                    </Grid>
+                    
+                    <!-- Form Buttons -->
+                    <Grid Grid.Row="2" Margin="16,0,16,16">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button x:Name="SaveButton" 
+                                    Style="{StaticResource PrimaryButton}" 
+                                    MinWidth="100" 
+                                    Click="SaveButton_Click" 
+                                    Margin="0,0,8,0">
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="ContentSave" 
+                                                       Width="16" 
+                                                       Height="16"
+                                                       VerticalAlignment="Center"/>
+                                    <TextBlock Text="Simpan" Margin="8,0,0,0"/>
+                                </StackPanel>
+                            </Button>
+                            
+                            <Button x:Name="DeleteButton" 
+                                    Style="{StaticResource DangerButton}" 
+                                    MinWidth="100" 
+                                    Click="DeleteButton_Click"
+                                    Margin="0">
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="Delete" 
+                                                       Width="16" 
+                                                       Height="16"
+                                                       VerticalAlignment="Center"/>
+                                    <TextBlock Text="Hapus" Margin="8,0,0,0"/>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                    </Grid>
                 </Grid>
-                
-                <TextBlock Grid.Row="5" Text="Deskripsi:" Margin="0,5"/>
-                <TextBox Grid.Row="6" x:Name="DescriptionTextBox" Height="60" TextWrapping="Wrap" AcceptsReturn="True" Margin="0,0,0,10"/>
-            </Grid>
-        </GroupBox>
-        
-        <!-- Action Buttons -->
-        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical" VerticalAlignment="Top">
-            <Button x:Name="SaveButton" Content="Simpan" Click="SaveButton_Click" Height="40" Margin="0,0,0,10"/>
-            <Button x:Name="NewButton" Content="Baru" Click="NewButton_Click" Height="40" Margin="0,0,0,10"/>
-            <Button x:Name="DeleteButton" Content="Hapus" Click="DeleteButton_Click" Height="40" Background="#e74c3c"/>
-        </StackPanel>
+            </Border>
+        </ScrollViewer>
     </Grid>
 </UserControl>

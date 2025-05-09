@@ -3,6 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+
              xmlns:local="clr-namespace:Laundry.Views"
              xmlns:converters="clr-namespace:Laundry.Converters"
              
@@ -207,14 +209,29 @@
         <converters:StatusToColorConverter x:Key="StatusToColorConverter" />
     </UserControl.Resources>
     
-    <Grid Margin="20">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <StackPanel Margin="20">
+        <!-- Header Section -->
+        <Border Style="{StaticResource ModernCardPanel}" Padding="0" Margin="0,0,0,16">
+            <Grid>
+                <Border Background="#3F51B5" CornerRadius="6,6,0,0" Padding="16,12">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <iconPacks:PackIconMaterial Kind="ClipboardList" Width="32" Height="32" Foreground="White" VerticalAlignment="Center"/>
+                        <StackPanel Grid.Column="1" Margin="15,0,0,0" VerticalAlignment="Center">
+                            <TextBlock Text="DATA PESANAN" FontSize="22" FontWeight="Bold" Foreground="White"/>
+                            <TextBlock Text="Kelola daftar pesanan pelanggan Anda" FontSize="14" Foreground="White" Opacity="0.8"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
+
         <!-- Search & Filter Panel -->
-        <Border Grid.Row="0" Style="{StaticResource ModernCardPanel}" Margin="0,0,0,16">
+        <Border Style="{StaticResource ModernCardPanel}" Padding="16" Margin="0,0,0,16">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -223,26 +240,14 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                
-                <TextBlock Grid.Column="0" Text="Cari:" Style="{StaticResource ModernTextBlock}"/>
+                <TextBlock Grid.Column="0" Text="Cari:" VerticalAlignment="Center" Margin="0,0,8,0"/>
                 <Grid Grid.Column="1" Margin="0,0,16,0">
-                    <TextBox x:Name="SearchTextBox" Style="{StaticResource ModernTextBox}" TextChanged="SearchTextBox_TextChanged">
-                        <TextBox.Resources>
-                            <Style TargetType="Border">
-                                <Setter Property="CornerRadius" Value="4"/>
-                            </Style>
-                        </TextBox.Resources>
-                    </TextBox>
-                    <TextBlock Text="🔍" Margin="0,0,10,0" HorizontalAlignment="Right" VerticalAlignment="Center" 
-                               Foreground="#757575" IsHitTestVisible="False"/>
+                    <TextBox x:Name="SearchTextBox" Style="{StaticResource ModernTextBox}" TextChanged="SearchTextBox_TextChanged"/>
+                    <TextBlock Text="🔍" Margin="0,0,10,0" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="#757575" IsHitTestVisible="False"/>
                 </Grid>
-                
-                <TextBlock Grid.Column="2" Text="Status:" Style="{StaticResource ModernTextBlock}"/>
-                <ComboBox Grid.Column="3" x:Name="StatusComboBox" Width="160" Margin="0,0,16,0" 
-                          Style="{StaticResource ModernComboBox}" SelectionChanged="StatusComboBox_SelectionChanged"/>
-                
-                <Button Grid.Column="4" Click="RefreshButton_Click" Width="100" 
-                        Style="{StaticResource PrimaryButton}">
+                <TextBlock Grid.Column="2" Text="Status:" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <ComboBox Grid.Column="3" x:Name="StatusComboBox" Width="160" Margin="0,0,16,0" Style="{StaticResource ModernComboBox}" SelectionChanged="StatusComboBox_SelectionChanged"/>
+                <Button Grid.Column="4" Click="RefreshButton_Click" Width="100" Style="{StaticResource PrimaryButton}">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" Margin="0,0,8,0"/>
                         <TextBlock Text="Refresh"/>
@@ -250,23 +255,22 @@
                 </Button>
             </Grid>
         </Border>
-        
+
         <!-- Orders List -->
-        <Border Grid.Row="1" Style="{StaticResource ModernCardPanel}" Padding="0" Margin="0">
+        <Border Style="{StaticResource ModernCardPanel}" Padding="0" Margin="0">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                
+
                 <!-- Header -->
                 <Border Grid.Row="0" Background="#3F51B5" CornerRadius="6,6,0,0">
                     <TextBlock Text="Daftar Pesanan" Foreground="White" FontWeight="SemiBold" FontSize="16" Margin="16,12"/>
                 </Border>
-                
+
                 <!-- DataGrid -->
-                <DataGrid Grid.Row="1" x:Name="OrdersDataGrid" Style="{StaticResource ModernDataGrid}" 
-                          BorderThickness="0" Margin="1,0,1,1">
+                <DataGrid Grid.Row="1" x:Name="OrdersDataGrid" Style="{StaticResource ModernDataGrid}" BorderThickness="0" Margin="1,0,1,1" AutoGenerateColumns="False">
                     <DataGrid.Resources>
                         <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource DataGridColumnHeader}"/>
                         <Style TargetType="DataGridCell" BasedOn="{StaticResource DataGridCell}"/>
@@ -279,10 +283,8 @@
                         <DataGridTemplateColumn Header="Status" Width="120">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Border Background="{Binding Status, Converter={StaticResource StatusToColorConverter}}" 
-                                            CornerRadius="4" Padding="8,4" Margin="0,6">
-                                        <TextBlock Text="{Binding Status}" Foreground="White" 
-                                                   HorizontalAlignment="Center" FontSize="12"/>
+                                    <Border Background="{Binding Status, Converter={StaticResource StatusToColorConverter}}" CornerRadius="4" Padding="8,4" Margin="0,6">
+                                        <TextBlock Text="{Binding Status}" Foreground="White" HorizontalAlignment="Center" FontSize="12"/>
                                     </Border>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
@@ -290,29 +292,24 @@
                         <DataGridTemplateColumn Header="Pembayaran" Width="100">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Border Background="{Binding IsPaid, Converter={StaticResource BoolToColorConverter}}" 
-                                            CornerRadius="4" Padding="8,4" Margin="0,6">
-                                        <TextBlock Text="{Binding IsPaid, Converter={StaticResource BoolToStatusConverter}}" 
-                                                   Foreground="White" HorizontalAlignment="Center" FontSize="12"/>
+                                    <Border Background="{Binding IsPaid, Converter={StaticResource BoolToColorConverter}}" CornerRadius="4" Padding="8,4" Margin="0,6">
+                                        <TextBlock Text="{Binding IsPaid, Converter={StaticResource BoolToStatusConverter}}" Foreground="White" HorizontalAlignment="Center" FontSize="12"/>
                                     </Border>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="Aksi" Width="260">
+                        <DataGridTemplateColumn Header="Aksi" Width="Auto">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <StackPanel Orientation="Horizontal" Margin="2">
-                                        <Button Click="DetailButton_Click" Tag="{Binding OrderId}" 
-                                                Width="70" Style="{StaticResource InfoButton}">
+                                    <StackPanel Orientation="Horizontal" Margin="2" HorizontalAlignment="Center">
+                                        <Button Click="DetailButton_Click" Tag="{Binding OrderId}" Width="70" Style="{StaticResource InfoButton}" Margin="2,0">
                                             <TextBlock Text="Detail"/>
                                         </Button>
-                                        <Button Click="PaymentButton_Click" Tag="{Binding OrderId}" 
-                                                Width="100" Style="{StaticResource SuccessButton}"
+                                        <Button Click="PaymentButton_Click" Tag="{Binding OrderId}" Width="100" Style="{StaticResource SuccessButton}" Margin="2,0"
                                                 Visibility="{Binding IsPaid, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=reverse}">
                                             <TextBlock Text="Pembayaran"/>
                                         </Button>
-                                        <Button Click="UpdateStatusButton_Click" Tag="{Binding OrderId}" 
-                                                Width="100" Style="{StaticResource WarningButton}">
+                                        <Button Click="UpdateStatusButton_Click" Tag="{Binding OrderId}" Width="100" Style="{StaticResource WarningButton}" Margin="2,0">
                                             <TextBlock Text="Update Status"/>
                                         </Button>
                                     </StackPanel>
@@ -323,5 +320,6 @@
                 </DataGrid>
             </Grid>
         </Border>
-    </Grid>
+    </StackPanel>
+    </ScrollViewer>
 </UserControl>

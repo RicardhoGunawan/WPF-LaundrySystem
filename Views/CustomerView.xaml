@@ -1,54 +1,337 @@
-﻿
-<UserControl x:Class="Laundry.Views.CustomerView"
+﻿<UserControl x:Class="Laundry.Views.CustomerView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:local="clr-namespace:Laundry.Views"
-             mc:Ignorable="d">
-    <Grid Margin="10">
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             mc:Ignorable="d"
+             Background="#F5F7FA">
+    
+    <UserControl.Resources>
+        <!-- Modern style resources -->
+        <Style x:Key="ModernTextBlock" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,0,12,0"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="Foreground" Value="#37474F"/>
+        </Style>
+        
+        <Style x:Key="ModernTextBox" TargetType="TextBox">
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Padding" Value="8,5"/>
+            <Setter Property="Margin" Value="0,5"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#DADCE0"/>
+            <Setter Property="Background" Value="White"/>
+        </Style>
+        
+        <Style x:Key="PrimaryButton" TargetType="Button">
+            <Setter Property="Background" Value="#3F51B5"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="16,8"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="4" 
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                BorderBrush="{TemplateBinding BorderBrush}">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                              VerticalAlignment="Center" 
+                                              Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#303F9F"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#1A237E"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <Style x:Key="InfoButton" TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+            <Setter Property="Background" Value="#2196F3"/>
+            <Setter Property="Padding" Value="12,4"/>
+            <Setter Property="Margin" Value="0,0,8,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="4" 
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                BorderBrush="{TemplateBinding BorderBrush}">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                            VerticalAlignment="Center" 
+                                            Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#1976D2"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#0D47A1"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <Style x:Key="DangerButton" TargetType="Button" BasedOn="{StaticResource InfoButton}">
+            <Setter Property="Background" Value="#e74c3c"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="4" 
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                BorderBrush="{TemplateBinding BorderBrush}">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                            VerticalAlignment="Center" 
+                                            Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#c0392b"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#a93226"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <Style x:Key="ModernCardPanel" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="Padding" Value="16"/>
+            <Setter Property="Margin" Value="0,0,0,16"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect ShadowDepth="1" BlurRadius="4" Opacity="0.15" Direction="270" Color="#000000"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <Style x:Key="ModernDataGrid" TargetType="DataGrid">
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="RowBackground" Value="White"/>
+            <Setter Property="AlternatingRowBackground" Value="#F5F7FA"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="#E0E0E0"/>
+            <Setter Property="VerticalGridLinesBrush" Value="#E0E0E0"/>
+            <Setter Property="RowHeight" Value="42"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+        </Style>
+        
+        <Style x:Key="DataGridColumnHeader" TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="#ECEFF1"/>
+            <Setter Property="Foreground" Value="#37474F"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="BorderThickness" Value="0,0,1,1"/>
+            <Setter Property="BorderBrush" Value="#CFD8DC"/>
+        </Style>
+        
+        <Style x:Key="DataGridCell" TargetType="DataGridCell">
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="DataGridCell">
+                        <Border Padding="{TemplateBinding Padding}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                Background="{TemplateBinding Background}" 
+                                SnapsToDevicePixels="True">
+                            <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    
+    <Grid Margin="20">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         
-        <!-- Search & Actions -->
-        <Grid Grid.Row="0" Margin="0,0,0,10">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            
-            <TextBlock Grid.Column="0" Text="Cari:" VerticalAlignment="Center" Margin="0,0,10,0"/>
-            <TextBox Grid.Column="1" x:Name="SearchTextBox" Margin="0,0,10,0" TextChanged="SearchTextBox_TextChanged"/>
-            
-            <Button Grid.Column="2" Content="Refresh" Click="RefreshButton_Click" Width="100" Margin="0,0,10,0"/>
-            <Button Grid.Column="3" Content="Tambah Pelanggan" Click="AddCustomerButton_Click" Width="150"/>
-        </Grid>
-        
-        <!-- Customers List -->
-        <DataGrid Grid.Row="1" x:Name="CustomersDataGrid" AutoGenerateColumns="False" IsReadOnly="True">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="ID" Binding="{Binding CustomerId}" Width="60"/>
-                <DataGridTextColumn Header="Nama" Binding="{Binding Name}" Width="*"/>
-                <DataGridTextColumn Header="No. Telepon" Binding="{Binding Phone}" Width="120"/>
-                <DataGridTextColumn Header="Alamat" Binding="{Binding Address}" Width="180"/>
-                <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="150"/>
-                <DataGridTextColumn Header="Terdaftar" Binding="{Binding RegisterDate, StringFormat='{}{0:dd/MM/yyyy}'}" Width="100"/>
-                <DataGridTemplateColumn Header="Aksi" Width="150">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
+        <!-- Header section with gradient -->
+        <Border Grid.Row="0" Style="{StaticResource ModernCardPanel}" Padding="0" Margin="0,0,0,16">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                
+                <Border Background="#3F51B5" CornerRadius="6,6,0,0" Padding="16,12">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <iconPacks:PackIconMaterial Kind="AccountGroup" 
+                                           Width="32" 
+                                           Height="32" 
+                                           Foreground="White" 
+                                           VerticalAlignment="Center"/>
+                        
+                        <StackPanel Grid.Column="1" Margin="15,0,0,0">
+                            <TextBlock Text="DATA PELANGGAN" 
+                               FontSize="22" 
+                               FontWeight="Bold" 
+                               Foreground="White"/>
+                            <TextBlock Text="Kelola informasi pelanggan Anda" 
+                               FontSize="14" 
+                               Foreground="White" 
+                               Opacity="0.8"/>
+                        </StackPanel>
+                        
+                        <Button Grid.Column="2" 
+                                Style="{StaticResource PrimaryButton}"
+                                Background="#5C6BC0"
+                                Padding="16,8"
+                                Margin="0"
+                                Click="AddCustomerButton_Click">
                             <StackPanel Orientation="Horizontal">
-                                <Button Content="Edit" Click="EditButton_Click" Tag="{Binding CustomerId}" Width="60" Margin="0,0,5,0"/>
-                                <Button Content="Hapus" Click="DeleteButton_Click" Tag="{Binding CustomerId}" Width="60" 
-                                        Background="#e74c3c"/>
+                                <iconPacks:PackIconMaterial Kind="AccountPlus" 
+                                                   Width="20" 
+                                                   Height="20"
+                                                   VerticalAlignment="Center"/>
+                                <TextBlock Text="Tambah Pelanggan" 
+                                   Margin="8,0,0,0"
+                                   VerticalAlignment="Center"/>
                             </StackPanel>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-        </DataGrid>
+                        </Button>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
+        
+        <!-- Search & Actions -->
+        <Border Grid.Row="1" Style="{StaticResource ModernCardPanel}" Margin="0,0,0,16">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <TextBlock Grid.Column="0" Text="Cari:" Style="{StaticResource ModernTextBlock}"/>
+                <Grid Grid.Column="1" Margin="0,0,16,0">
+                    <TextBox x:Name="SearchTextBox" 
+                             Style="{StaticResource ModernTextBox}" 
+                             TextChanged="SearchTextBox_TextChanged">
+                        <TextBox.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="4"/>
+                            </Style>
+                        </TextBox.Resources>
+                    </TextBox>
+                    <TextBlock Text="🔍" Margin="0,0,10,0" HorizontalAlignment="Right" VerticalAlignment="Center" 
+                               Foreground="#757575" IsHitTestVisible="False"/>
+                </Grid>
+                
+                <Button Grid.Column="2" Click="RefreshButton_Click" Width="100" 
+                        Style="{StaticResource PrimaryButton}">
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconMaterial Kind="Refresh" 
+                                           Width="16" 
+                                           Height="16"
+                                           VerticalAlignment="Center"
+                                           Margin="0,0,8,0"/>
+                        <TextBlock Text="Refresh"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
+        </Border>
+        
+       <!-- Customers List -->
+        <Border Grid.Row="2" Style="{StaticResource ModernCardPanel}" Padding="0" Margin="0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Header -->
+                <Border Grid.Row="0" Background="#3F51B5" CornerRadius="6,6,0,0">
+                    <TextBlock Text="Daftar Pelanggan" Foreground="White" FontWeight="SemiBold" FontSize="16" Margin="16,12"/>
+                </Border>
+
+                <!-- DataGrid -->
+                <DataGrid Grid.Row="1"
+                          x:Name="CustomersDataGrid"
+                          Style="{StaticResource ModernDataGrid}"
+                          BorderThickness="0"
+                          Margin="1,0,1,1"
+                          MinWidth="800"
+                          AutoGenerateColumns="False"
+                          CanUserAddRows="False"
+                          ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                          ScrollViewer.VerticalScrollBarVisibility="Auto">
+                    <DataGrid.Resources>
+                        <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource DataGridColumnHeader}"/>
+                        <Style TargetType="DataGridCell" BasedOn="{StaticResource DataGridCell}"/>
+                    </DataGrid.Resources>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Binding="{Binding CustomerId}" Width="80"/>
+                        <DataGridTextColumn Header="Nama" Binding="{Binding Name}" Width="200"/>
+                        <DataGridTextColumn Header="No. Telepon" Binding="{Binding Phone}" Width="130"/>
+                        <DataGridTextColumn Header="Alamat" Binding="{Binding Address}" Width="250"/>
+                        <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="200"/>
+                        <DataGridTextColumn Header="Terdaftar" Binding="{Binding RegisterDate, StringFormat='{}{0:dd/MM/yyyy}'}" Width="120"/>
+                        <DataGridTemplateColumn Header="Aksi" MinWidth="160" Width="Auto" IsReadOnly="True">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <DockPanel LastChildFill="False" Margin="2" HorizontalAlignment="Center">
+                                        <Button Click="EditButton_Click"
+                                                Tag="{Binding CustomerId}"
+                                                Width="80"
+                                                Margin="0,0,4,0"
+                                                Style="{StaticResource InfoButton}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <iconPacks:PackIconMaterial Kind="Pencil" Width="12" Height="12"/>
+                                                <TextBlock Text="Edit" Margin="5,0,0,0" FontSize="12"/>
+                                            </StackPanel>
+                                        </Button>
+                                        <Button Click="DeleteButton_Click"
+                                                Tag="{Binding CustomerId}"
+                                                Width="80"
+                                                Style="{StaticResource DangerButton}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <iconPacks:PackIconMaterial Kind="Delete" Width="12" Height="12"/>
+                                                <TextBlock Text="Delete" Margin="5,0,0,0" FontSize="12"/>
+                                            </StackPanel>
+                                        </Button>
+                                    </DockPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>
