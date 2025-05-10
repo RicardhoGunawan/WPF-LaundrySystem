@@ -84,6 +84,7 @@ namespace Laundry.Views
             {
                 var query = _context.Orders
                     .Include(o => o.Customer)
+                    .AsNoTracking() // Tambahkan ini untuk menghindari caching
                     .AsQueryable();
                 
                 // Apply search filter
@@ -169,12 +170,14 @@ namespace Laundry.Views
         {
             var button = sender as Button;
             int orderId = Convert.ToInt32(button.Tag);
-            
+    
             var statusUpdateWindow = new StatusUpdateWindow(orderId);
             statusUpdateWindow.Owner = Window.GetWindow(this);
-            
+    
             if (statusUpdateWindow.ShowDialog() == true)
             {
+                // Pastikan context baru untuk memuat data fresh
+                _context = new LaundryDbContext();
                 LoadOrders(SearchTextBox.Text, StatusComboBox.SelectedItem?.ToString() ?? "");
             }
         }

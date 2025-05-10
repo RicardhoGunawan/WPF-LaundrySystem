@@ -25,9 +25,9 @@
                     <SolidColorBrush x:Key="LightTextColor" Color="#757575"/>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
-                <converters:BoolToStatusConverter x:Key="BoolToStatusConverter"/>
-                <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
-                <converters:BoolToColorConverter x:Key="BoolToColorConverter" />
+            <converters:BoolToStatusConverter x:Key="BoolToStatusConverter"/>
+            <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+            <converters:BoolToColorConverter x:Key="BoolToColorConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

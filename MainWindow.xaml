@@ -14,14 +14,6 @@
         BorderBrush="{DynamicResource MahApps.Brushes.Accent}"
         TitleCharacterCasing="Normal">
     
-    <mah:MetroWindow.LeftWindowCommands>
-        <mah:WindowCommands>
-            <Button ToolTip="Beranda">
-                <iconPacks:PackIconMaterial Kind="Home" />
-            </Button>
-        </mah:WindowCommands>
-    </mah:MetroWindow.LeftWindowCommands>
-    
     <mah:MetroWindow.RightWindowCommands>
         <mah:WindowCommands>
             <Button ToolTip="Pengaturan">
@@ -32,151 +24,181 @@
             </Button>
         </mah:WindowCommands>
     </mah:MetroWindow.RightWindowCommands>
+
+    <!-- Definisi Style untuk RadioButton di Sidebar -->
+    <mah:MetroWindow.Resources>
+        <Style x:Key="SidebarRadioButtonStyle" TargetType="RadioButton">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border x:Name="border" Background="Transparent" BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6" Padding="15,0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <ContentPresenter x:Name="icon" Content="{TemplateBinding Content}" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" Text="{TemplateBinding Tag}" Margin="15,0,0,0" VerticalAlignment="Center" Foreground="#A2A3B7" FontSize="14"/>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#1B1B29"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#1B1B29"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="48"/>
+            <Setter Property="Margin" Value="10,5"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+    </mah:MetroWindow.Resources>
     
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-
-        <!-- Header with Gradient -->
-        <Border Grid.Row="0" Padding="20" Margin="0,0,0,10">
-            <Border.Background>
-                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                    <GradientStop Color="#1976D2" Offset="0"/>
-                    <GradientStop Color="#2196F3" Offset="1"/>
-                </LinearGradientBrush>
-            </Border.Background>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                
-                <iconPacks:PackIconMaterial Kind="WashingMachine" 
-                                         Width="40" 
-                                         Height="40" 
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        
+        <!-- Sidebar -->
+        <Grid Grid.Column="0" Background="#1E1E2D">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="120"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            
+            <!-- Logo Header -->
+            <Border Grid.Row="0" Padding="15" Background="#151521">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Border Width="50" Height="50" Background="#3699FF" CornerRadius="8">
+                        <iconPacks:PackIconMaterial Kind="WashingMachine" 
+                                         Width="30" 
+                                         Height="30" 
                                          Foreground="White" 
-                                         VerticalAlignment="Center"/>
-                
-                <StackPanel Grid.Column="1" Margin="15,0,0,0">
-                    <TextBlock Text="SISTEM MANAJEMEN LAUNDRY" 
-                           FontSize="26" 
+                                         VerticalAlignment="Center"
+                                         HorizontalAlignment="Center"/>
+                    </Border>
+                    <StackPanel Margin="15,0,0,0">
+                        <TextBlock Text="CucianKu" 
+                           FontSize="20" 
                            FontWeight="Bold" 
                            Foreground="White"/>
-                    <TextBlock Text="Kelola bisnis laundry Anda dengan mudah" 
-                           FontSize="14" 
-                           Foreground="White" 
-                           Opacity="0.8"/>
+                        <TextBlock Text="Manajemen Laundry" 
+                           FontSize="12" 
+                           Foreground="#A2A3B7" 
+                           Margin="0,3,0,0"/>
+                    </StackPanel>
                 </StackPanel>
-                
-                <StackPanel Grid.Column="2" Orientation="Horizontal">
-                    <Button Style="{StaticResource MahApps.Styles.Button.Square}"
-                            Background="#ffffff20"
-                            Width="100" Height="60" 
-                            Margin="5,0"
-                            Foreground="White">
-                        <StackPanel>
-                            <iconPacks:PackIconMaterial Kind="CalendarToday" 
-                                                     Width="24" 
-                                                     Height="24"
-                                                     HorizontalAlignment="Center"/>
-                            <TextBlock Text="Hari Ini" 
-                                   HorizontalAlignment="Center"
-                                   Margin="0,5,0,0"/>
+            </Border>
+            
+            <!-- Navigation Menu -->
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="0,15,0,0">
+                <StackPanel x:Name="NavPanel">
+                    <!-- Dashboard Button -->
+                    <RadioButton Style="{StaticResource SidebarRadioButtonStyle}" GroupName="NavButtons" IsChecked="True" 
+                                 Tag="Pesanan Baru">
+                        <iconPacks:PackIconMaterial Kind="CartPlus" Width="22" Height="22" Foreground="#A2A3B7"/>
+                        <RadioButton.CommandParameter>
+                            <local:NewOrderView/>
+                        </RadioButton.CommandParameter>
+                    </RadioButton>
+                    
+                    <!-- Order List Button -->
+                    <RadioButton Style="{StaticResource SidebarRadioButtonStyle}" GroupName="NavButtons" 
+                                 Tag="Daftar Pesanan">
+                        <iconPacks:PackIconMaterial Kind="FormatListBulleted" Width="22" Height="22" Foreground="#A2A3B7"/>
+                        <RadioButton.CommandParameter>
+                            <views:OrderListView/>
+                        </RadioButton.CommandParameter>
+                    </RadioButton>
+                    
+                    <!-- Customers Button -->
+                    <RadioButton Style="{StaticResource SidebarRadioButtonStyle}" GroupName="NavButtons" 
+                                 Tag="Pelanggan">
+                        <iconPacks:PackIconMaterial Kind="AccountGroup" Width="22" Height="22" Foreground="#A2A3B7"/>
+                        <RadioButton.CommandParameter>
+                            <views:CustomerView/>
+                        </RadioButton.CommandParameter>
+                    </RadioButton>
+                    
+                    <!-- Services Button -->
+                    <RadioButton Style="{StaticResource SidebarRadioButtonStyle}" GroupName="NavButtons" 
+                                 Tag="Layanan">
+                        <iconPacks:PackIconMaterial Kind="Tag" Width="22" Height="22" Foreground="#A2A3B7"/>
+                        <RadioButton.CommandParameter>
+                            <views:ServiceView/>
+                        </RadioButton.CommandParameter>
+                    </RadioButton>
+                    
+                    <!-- Reports Button -->
+                    <RadioButton Style="{StaticResource SidebarRadioButtonStyle}" GroupName="NavButtons" 
+                                 Tag="Laporan">
+                        <iconPacks:PackIconMaterial Kind="ChartBar" Width="22" Height="22" Foreground="#A2A3B7"/>
+                        <RadioButton.CommandParameter>
+                            <views:ReportView/>
+                        </RadioButton.CommandParameter>
+                    </RadioButton>
+                </StackPanel>
+            </ScrollViewer>
+            
+            <!-- Bottom Section -->
+            <Border Grid.Row="2" Background="#151521" Padding="15" Margin="0,15,0,0">
+                <Grid>
+                    <Button Background="Transparent" BorderThickness="0" 
+                            Height="40" Cursor="Hand">
+                        <StackPanel Orientation="Horizontal">
+                            <iconPacks:PackIconMaterial Kind="Logout" Width="20" Height="20" Foreground="#A2A3B7"/>
+                            <TextBlock Text="Keluar" Margin="10,0,0,0" VerticalAlignment="Center" Foreground="#A2A3B7"/>
                         </StackPanel>
                     </Button>
-                    <Button Style="{StaticResource MahApps.Styles.Button.Square}"
-                            Background="#ffffff20"
-                            Width="100" Height="60" 
-                            Margin="5,0"
-                            Foreground="White">
-                        <StackPanel>
-                            <iconPacks:PackIconMaterial Kind="BellOutline" 
-                                                     Width="24" 
-                                                     Height="24"
-                                                     HorizontalAlignment="Center"/>
-                            <TextBlock Text="Notifikasi" 
-                                   HorizontalAlignment="Center"
-                                   Margin="0,5,0,0"/>
-                        </StackPanel>
-                    </Button>
-                </StackPanel>
-            </Grid>
-        </Border>
-
+                </Grid>
+            </Border>
+        </Grid>
+        
         <!-- Main Content -->
-        <TabControl Grid.Row="1" Margin="10">
-            <TabItem>
-                <TabItem.Header>
-                    <StackPanel Orientation="Horizontal" Margin="5,0">
-                        <iconPacks:PackIconMaterial Kind="CartPlus" 
-                                              Width="16" 
-                                              Height="16" 
-                                              VerticalAlignment="Center" 
-                                              Margin="0,0,5,0"/>
-                        <TextBlock Text="Pesanan Baru" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </TabItem.Header>
-                <local:NewOrderView/>
-            </TabItem>
+        <Grid Grid.Column="1" Background="WhiteSmoke">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
             
-            <TabItem>
-                <TabItem.Header>
-                    <StackPanel Orientation="Horizontal" Margin="5,0">
-                        <iconPacks:PackIconMaterial Kind="FormatListBulleted" 
-                                              Width="16" 
-                                              Height="16" 
-                                              VerticalAlignment="Center" 
-                                              Margin="0,0,5,0"/>
-                        <TextBlock Text="Daftar Pesanan" VerticalAlignment="Center"/>
+            <!-- Header Bar -->
+            <Border Grid.Row="0" Background="White" BorderThickness="0,0,0,1" BorderBrush="#EEEEEE" Padding="20,15" Margin="0,0,0,2">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <TextBlock x:Name="PageTitle" Text="Pesanan Baru" FontSize="20" FontWeight="SemiBold" Foreground="#464E5F"/>
+                    
+                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                        <Button Width="40" Height="40" Margin="5,0"
+                                Background="Transparent" BorderThickness="0">
+                            <iconPacks:PackIconMaterial Kind="Bell" Width="18" Height="18" Foreground="#B5B5C3"/>
+                        </Button>
+                        <Button Width="40" Height="40" Margin="5,0"
+                                Background="Transparent" BorderThickness="0">
+                            <iconPacks:PackIconMaterial Kind="AccountCircle" Width="18" Height="18" Foreground="#B5B5C3"/>
+                        </Button>
                     </StackPanel>
-                </TabItem.Header>
-                <views:OrderListView/>
-            </TabItem>
+                </Grid>
+            </Border>
             
-            <TabItem>
-                <TabItem.Header>
-                    <StackPanel Orientation="Horizontal" Margin="5,0">
-                        <iconPacks:PackIconMaterial Kind="AccountGroup" 
-                                              Width="16" 
-                                              Height="16" 
-                                              VerticalAlignment="Center" 
-                                              Margin="0,0,5,0"/>
-                        <TextBlock Text="Pelanggan" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </TabItem.Header>
-                <views:CustomerView/>
-            </TabItem>
-            
-            <TabItem>
-                <TabItem.Header>
-                    <StackPanel Orientation="Horizontal" Margin="5,0">
-                        <iconPacks:PackIconMaterial Kind="Tag" 
-                                              Width="16" 
-                                              Height="16" 
-                                              VerticalAlignment="Center" 
-                                              Margin="0,0,5,0"/>
-                        <TextBlock Text="Layanan" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </TabItem.Header>
-                <views:ServiceView/>
-            </TabItem>
-            
-            <TabItem>
-                <TabItem.Header>
-                    <StackPanel Orientation="Horizontal" Margin="5,0">
-                        <iconPacks:PackIconMaterial Kind="ChartBar" 
-                                              Width="16" 
-                                              Height="16" 
-                                              VerticalAlignment="Center" 
-                                              Margin="0,0,5,0"/>
-                        <TextBlock Text="Laporan" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </TabItem.Header>
-                <views:ReportView/>
-            </TabItem>
-        </TabControl>
+            <!-- Content Area -->
+            <Border Grid.Row="1" Margin="20">
+                <ContentControl x:Name="ContentArea">
+                    <local:NewOrderView/>
+                </ContentControl>
+            </Border>
+        </Grid>
     </Grid>
 </mah:MetroWindow>
